@@ -1,18 +1,24 @@
+import { ApiResponse } from "../utils/apiResponse.js";
 import { verifyToken } from "../utils/jwtHandler.js";
 
-export const verifyAdmin = (req, res, next) => {
-    const token = req.cookies.admin;
-
-    if (!token) {
-        return res.status(401).json({ message: 'Unauthorized access' });
-    }
-
+export const verifyAdmin = async (req, res, next) => {
     try {
-        const decoded = verifyToken(token);
+        const token = req.cookies.admin;
+
+        if (!token) {
+            return res.status(401).json(new ApiResponse(401, null, 'Unauthorized access'));
+        }
+
+        const decoded = await verifyToken(token);
+
+        if (!decoded) {
+            return res.status(403).json(new ApiResponse(401, null, 'Unauthorized access'));
+        }
+
         req._id = decoded.data;
         next();
     } catch (error) {
-        return res.status(403).json({ message: 'Forbidden access' });
+        return res.status(403).json(new ApiResponse(401, null, 'Unauthorized access'));
     }
 }
 
@@ -20,14 +26,17 @@ export const verifyStudent = async (req, res, next) => {
     const token = req.cookies.token;
 
     if (!token) {
-        return res.status(401).json({ message: 'Unauthorized access' });
+        return res.status(401).json(new ApiResponse(401, null, 'Unauthorized access'));
     }
 
     try {
         const decoded = await verifyToken(token);
+        if (!decoded) {
+            return res.status(403).json(new ApiResponse(401, null, 'Unauthorized access'));
+        }
         req._id = decoded.id;
         next();
     } catch (error) {
-        return res.status(403).json({ message: 'Forbidden access' });
+        return res.status(403).json(new ApiResponse(401, null, 'Unauthorized access'));
     }
 }

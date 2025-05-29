@@ -72,6 +72,10 @@ export const createExam = asyncHandler(async (req, res) => {
             questionSchema
         } = req.body;
 
+        if (!title || !subject || !semester || !durationMinutes || !totalMarks || !passingMarks || !questionSchema || !syllabusPDFs) {
+            throw new ApiError(400, 'All fields are required except description.');
+        }
+
         const newExam = await Exam.create({
             title,
             subject,
@@ -83,6 +87,7 @@ export const createExam = asyncHandler(async (req, res) => {
             passingMarks,
             chapters,
             status,
+            syllabusPDFs,
             createdBy: req._id
         });
 

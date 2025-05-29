@@ -10,10 +10,8 @@ export const createToken = (data) => {
 export const verifyToken = async (token) => {
     try {
         const decoded = await jwt.verify(token, process.env.JWT_SECRET);
-        console.log("Decoded token:", decoded);
-
         return decoded;
-    } catch (error) {
-        throw new Error('Invalid token');
+    } catch (e) {
+        return null;
     }
 }
