@@ -34,8 +34,14 @@ const Exam = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "QuestionPaperSchema"
         },
-        chapters: [String],
-        syllabusPDFs: [String], // paths or links
+        chapters: {
+            type: [String], // Array of chapter names or IDs
+            default: []
+        },
+        syllabusPDFs: {
+            type: [String], // Array of paths or links to syllabus PDFs
+            default: []
+        },
         status: {
             type: String,
             enum: ['draft', 'active', 'completed'], default: 'draft'

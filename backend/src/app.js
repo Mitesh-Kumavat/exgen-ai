@@ -15,8 +15,10 @@ app.use(cookieParser());
 
 import adminRouter from "./routes/admin.routes.js"
 import studentRouter from "./routes/student.routes.js";
+import examRouter from "./routes/exam.routes.js";
 
 app.use("/api/v1/admin", adminRouter)
 app.use("/api/v1/student", studentRouter)
+app.use("/api/v1/exam", examRouter);
 
 export { app };

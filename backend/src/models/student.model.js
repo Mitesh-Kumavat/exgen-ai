@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
 
 const StudentSchema = new mongoose.Schema({
     name: {
@@ -12,7 +13,7 @@ const StudentSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        default: 'exgen@ai'
     },
     email: {
         type: String,
@@ -28,5 +29,30 @@ const StudentSchema = new mongoose.Schema({
         required: true,
     },
 }, { timestamps: true });
+
+
+StudentSchema.methods.matchPassword = async function (enteredPassword) {
+    return enteredPassword === this.password;
+};
+
+StudentSchema.methods.generateToken = function () {
+    const token = jwt.sign({
+        id: this._id,
+        enrollmentNumber: this.enrollmentNumber
+    },
+        process.env.JWT_SECRET,
+        { expiresIn: '1d' }
+    );
+    return token;
+}
+
+StudentSchema.methods.verifyToken = function (token) {
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        return decoded;
+    } catch (error) {
+        return null;
+    }
+}
 
 export const StudentModel = mongoose.model('Student', StudentSchema);

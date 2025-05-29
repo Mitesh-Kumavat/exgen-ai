@@ -7,9 +7,11 @@ export const createToken = (data) => {
     return token;
 }
 
-export const verifyToken = (token) => {
+export const verifyToken = async (token) => {
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+        console.log("Decoded token:", decoded);
+
         return decoded;
     } catch (error) {
         throw new Error('Invalid token');

@@ -16,7 +16,7 @@ export const verifyAdmin = (req, res, next) => {
     }
 }
 
-export const verifyStudent = (req, res, next) => {
+export const verifyStudent = async (req, res, next) => {
     const token = req.cookies.token;
 
     if (!token) {
@@ -24,8 +24,8 @@ export const verifyStudent = (req, res, next) => {
     }
 
     try {
-        const decoded = verifyToken(token);
-        req._id = decoded.data;
+        const decoded = await verifyToken(token);
+        req._id = decoded.id;
         next();
     } catch (error) {
         return res.status(403).json({ message: 'Forbidden access' });

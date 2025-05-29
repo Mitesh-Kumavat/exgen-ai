@@ -36,9 +36,9 @@ export const signUp = asyncHandler(async (req, res) => {
         res.status(200).json(apiResponse);
     } catch (error) {
         if (error instanceof ApiError) {
-            return res.status(error.statusCode).json({ message: error.message });
+            return res.status(error.statusCode).json(new ApiResponse(error.statusCode, null, error.message));
         }
-        return res.status(500).json({ message: 'Internal Server Error' });
+        return res.status(500).json(new ApiResponse(500, null, 'Internal Server Error'));
     }
 })
 
@@ -71,9 +71,9 @@ export const login = asyncHandler(async (req, res) => {
             .json(apiResponse);
     } catch (error) {
         if (error instanceof ApiError) {
-            return res.status(error.statusCode).json({ message: error.message });
+            return res.status(error.statusCode).json(new ApiResponse(error.statusCode, null, error.message));
         }
-        return res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json(new ApiResponse(500, null, 'Internal Server Error'));
     }
 })
 
@@ -94,9 +94,9 @@ export const getAdmin = asyncHandler(async (req, res) => {
         res.status(200).json(apiResponse);
     } catch (error) {
         if (error instanceof ApiError) {
-            return res.status(error.statusCode).json({ message: error.message });
+            return res.status(error.statusCode).json(new ApiResponse(error.statusCode, null, error.message));
         }
-        return res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json(new ApiResponse(500, null, 'Internal Server Error'));
     }
 })
 
@@ -128,9 +128,9 @@ export const uploadStudentFromCsv = asyncHandler(async (req, res) => {
         return res.status(201).json(new ApiResponse(201, students, 'Students uploaded successfully'));
     } catch (error) {
         if (error instanceof ApiError) {
-            return res.status(error.statusCode).json({ message: error.message });
+            return res.status(error.statusCode).json(new ApiResponse(error.statusCode, null, error.message));
         }
-        return res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json(new ApiResponse(500, null, 'Internal Server Error'));
     }
 });
 
@@ -151,9 +151,9 @@ export const deleteStudent = asyncHandler(async (req, res) => {
         return res.status(200).json(new ApiResponse(200, null, 'Student deleted successfully'));
     } catch (error) {
         if (error instanceof ApiError) {
-            return res.status(error.statusCode).json({ message: error.message });
+            return res.status(error.statusCode).json(new ApiResponse(error.statusCode, null, error.message));
         }
-        return res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json(new ApiResponse(500, null, 'Internal Server Error'));
     }
 });
 
@@ -168,9 +168,9 @@ export const deleteAllStudents = asyncHandler(async (req, res) => {
         return res.status(200).json(new ApiResponse(200, null, `${result.deletedCount} students deleted successfully`));
     } catch (error) {
         if (error instanceof ApiError) {
-            return res.status(error.statusCode).json({ message: error.message });
+            return res.status(error.statusCode).json(new ApiResponse(error.statusCode, null, error.message));
         }
-        return res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json(new ApiResponse(500, null, 'Internal Server Error'));
     }
 });
 
@@ -192,9 +192,9 @@ export const generateRandomPasswords = asyncHandler(async (req, res) => {
         return res.status(200).json(new ApiResponse(200, updatedStudents, 'Random passwords generated successfully'));
     } catch (error) {
         if (error instanceof ApiError) {
-            return res.status(error.statusCode).json({ message: error.message });
+            return res.status(error.statusCode).json(new ApiResponse(error.statusCode, null, error.message));
         }
-        return res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json(new ApiResponse(500, null, 'Internal Server Error'));
     }
 });
 
@@ -214,8 +214,8 @@ export const mailPassword = asyncHandler(async (req, res) => {
         return res.status(200).json(new ApiResponse(200, null, 'Password emails sent successfully'));
     } catch (error) {
         if (error instanceof ApiError) {
-            return res.status(error.statusCode).json({ message: error.message });
+            return res.status(error.statusCode).json(new ApiResponse(error.statusCode, null, error.message));
         }
-        return res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json(new ApiResponse(500, null, 'Internal Server Error'));
     }
 });
