@@ -10,22 +10,35 @@ cloudinary.config({
 const uploadOnCloudinary = async (localFilePath) => {
     try {
         if (!localFilePath) return null
-        // upload the file on cloudinary
         const uploadResult = await cloudinary.uploader
-            .upload(localFilePath, { resource_type: "auto" })
-            // file has been uploaded succesfully
+            .upload(localFilePath, { resource_type: "raw", folder: "exgen_pdfs", access_mode: "public" })
             .catch((error) => {
                 console.log("Error while Uploading on Cloudinary", error);
             });
 
         fs.unlinkSync(localFilePath);
-        console.log("File is Uploaded on Cloudinary url: ", uploadResult.url)
+        console.log("File is Uploaded on Cloudinary url: ", uploadResult)
         return uploadResult;
     } catch (error) {
         console.log("ERROR IN CLOUDINARY FILE, ", error)
-        fs.unlinkSync(localFilePath) //remove the locally saved temp file as the upload operation got failed
+        fs.unlinkSync(localFilePath)
         return null;
     }
 }
 
-export { uploadOnCloudinary }
+const deleteFromCloudinary = async (publicId) => {
+    try {
+        if (!publicId) return null
+        const deleteResult = await cloudinary.uploader.destroy(publicId, { resource_type: "raw" })
+            .catch((error) => {
+                console.log("Error while Deleting from Cloudinary", error);
+            });
+        console.log("File is Deleted from Cloudinary: ", deleteResult)
+        return deleteResult;
+    } catch (error) {
+        console.log("ERROR IN CLOUDINARY FILE DELETION, ", error)
+        return null;
+    }
+}
+
+export { uploadOnCloudinary, deleteFromCloudinary }

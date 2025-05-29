@@ -39,7 +39,16 @@ const Exam = new mongoose.Schema(
             default: []
         },
         syllabusPDFs: {
-            type: [String], // Array of paths or links to syllabus PDFs
+            type: [{
+                url: {
+                    type: String,
+                    required: true
+                },
+                publicId: {
+                    type: String,
+                    required: true
+                }
+            }],
             default: []
         },
         status: {

@@ -7,6 +7,8 @@ import { createToken } from '../utils/jwtHandler.js'
 import csv from 'csvtojson';
 import { sendEmail } from '../utils/mail.js'
 import { mailPasswordTemplate } from '../templates/passwordMail.js'
+import { deleteFromCloudinary, uploadOnCloudinary } from '../utils/Cloudinary.js'
+import { deleteFile } from '../utils/deleteFile.js'
 
 export const signUp = asyncHandler(async (req, res) => {
     try {
@@ -80,7 +82,6 @@ export const login = asyncHandler(async (req, res) => {
 export const getAdmin = asyncHandler(async (req, res) => {
     try {
         const admin = req._id;
-
         if (!admin) {
             throw new ApiError(404, 'Invalid Request',);
         }
@@ -124,6 +125,8 @@ export const uploadStudentFromCsv = asyncHandler(async (req, res) => {
         }
 
         const students = await Student.insertMany(studentsData);
+
+        deleteFile(req.file.path);
 
         return res.status(201).json(new ApiResponse(201, students, 'Students uploaded successfully'));
     } catch (error) {
@@ -219,3 +222,54 @@ export const mailPassword = asyncHandler(async (req, res) => {
         res.status(500).json(new ApiResponse(500, null, 'Internal Server Error'));
     }
 });
+
+export const uploadPDF = asyncHandler(async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json(new ApiResponse(400, null, 'PDF file is required'));
+        }
+        if (req.file.mimetype !== 'application/pdf') {
+            return res.status(400).json(new ApiResponse(400, null, 'Only PDF files are allowed'));
+        }
+        const uploadResult = await uploadOnCloudinary(req.file.path);
+
+        if (!uploadResult) {
+            return res.status(500).json(new ApiResponse(500, null, 'Failed to upload PDF',));
+        }
+
+        const apiResponse = new ApiResponse(200, {
+            url: uploadResult.secure_url,
+            publicId: uploadResult.public_id
+        }, 'PDF uploaded successfully');
+
+        return res.status(200).json(apiResponse);
+    } catch (error) {
+        if (error instanceof ApiError) {
+            return res.status(error.statusCode).json(new ApiResponse(error.statusCode, null, error.message));
+        }
+        res.status(500).json(new ApiResponse(500, null, 'Internal Server Error'));
+    }
+})
+
+export const deletePDF = asyncHandler(async (req, res) => {
+    try {
+        const { publicId } = req.body;
+
+        if (!publicId) {
+            return res.status(400).json(new ApiResponse(400, null, 'Public ID is required'));
+        }
+
+        const result = await deleteFromCloudinary(publicId);
+
+        if (result.result !== 'ok') {
+            return res.status(500).json(new ApiResponse(500, null, 'Failed to delete PDF',));
+        }
+
+        return res.status(200).json(new ApiResponse(200, null, 'PDF deleted successfully'));
+    } catch (error) {
+        if (error instanceof ApiError) {
+            return res.status(error.statusCode).json(new ApiResponse(error.statusCode, null, error.message));
+        }
+        res.status(500).json(new ApiResponse(500, null, 'Internal Server Error'));
+    }
+})

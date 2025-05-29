@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, getAdmin, signUp, logout, uploadStudentFromCsv, deleteStudent, deleteAllStudents, generateRandomPasswords, mailPassword } from '../controller/admin.controller.js';
+import { login, getAdmin, signUp, logout, uploadStudentFromCsv, deleteStudent, deleteAllStudents, generateRandomPasswords, mailPassword, uploadPDF, deletePDF } from '../controller/admin.controller.js';
 import { verifyAdmin } from "../middleware/index.js";
 import { uploadMiddleware } from '../middleware/multer.js'
 
@@ -16,5 +16,9 @@ router.delete('/student/:id', verifyAdmin, deleteStudent)
 router.delete('/bluk-delete', verifyAdmin, deleteAllStudents);
 router.get('/generate-password', verifyAdmin, generateRandomPasswords);
 router.get('/mail-password', verifyAdmin, mailPassword);
+
+// admin actions on uploading files...
+router.post('/pdf', verifyAdmin, uploadMiddleware, uploadPDF);
+router.delete('/pdf', verifyAdmin, deletePDF);
 
 export default router;
