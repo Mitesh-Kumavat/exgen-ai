@@ -35,7 +35,7 @@ const Exam = new mongoose.Schema(
             ref: "QuestionPaperSchema"
         },
         chapters: {
-            type: [String], // Array of chapter names or IDs
+            type: [String],
             default: []
         },
         syllabusPDFs: {

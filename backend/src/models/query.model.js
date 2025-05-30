@@ -13,7 +13,7 @@ const Query = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "AnswerSheet"
     },
-    questionPaper: {
+    examPaper: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "ExamPaper"
     },
