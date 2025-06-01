@@ -25,4 +25,8 @@ app.use("/api/v1/exam", examRouter);
 app.use("/api/v1/exam-paper", examPaperRouter);
 app.use("/api/v1/query", queryRouter);
 
+// Error handling middleware
+import { globalErrorHandler } from "./middleware/errorHandler.js";
+app.use(globalErrorHandler);
+
 export { app };

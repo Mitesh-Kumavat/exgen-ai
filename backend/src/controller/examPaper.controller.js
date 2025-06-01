@@ -1,19 +1,87 @@
-
+import { ExamPaperModel } from "../models/examPaper.model.js";
+import { ExamModel as Exam } from "../models/exam.model.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import ApiError from "../utils/apiError.js";
+import { ApiResponse } from "../utils/apiResponse.js";
 
 export const getExamPapers = async (req, res) => {
-    // get all the exam papers for the particular exam
+    const { examId } = req.params;
+    if (!examId) {
+        throw new ApiError(400, 'Exam ID is required');
+    }
+
+    const examPapers = await ExamPaper.find({ exam: examId }).populate('student', 'name email').populate('exam', 'title subject semester');
+
+    if (!examPapers || examPapers.length === 0) {
+        throw new ApiError(404, 'No exam papers found for this exam');
+    }
+
+    return res.status(200).json(new ApiResponse(200, examPapers, 'Exam papers retrieved successfully'));
 }
 
-export const generateExamPaperForStudent = async (req, res) => {
-    //generate exam paper for each student by making request to the exam paper service on the python fastapi server
+export const getExamPaperByStudentId = asyncHandler(async (req, res) => {
+    const { examId } = req.params;
+    const { studentId } = req._id;
 
-    // HOW TO DO THIS?
-    // 1. Get the exam ID from the request parameters
-    // 2. Fetch the exam details from the database
-    // 3. Fetch the question paper schema and PDF links of the chapter 
-    // 4. Generate the exam paper using the exam paper ai service
-    // 5. Save the generated exam paper to the database along with the student ID
-    // 6. Return the generated exam paper to the student with minimal details so that cheating is not possible via viewing the api response
-    // NOTE: The exam paper should be generated only once for each student and should not be regenerated if it already exists in the database, and also make sure to handle the case where the exam paper generation fails, and if the exam paper generated successfully then store it with proper relation so that it is connected to the student and exam and the question paper schema.
+    if (!examId || !studentId) {
+        throw new ApiError(400, 'Exam ID and Student ID are required');
+    }
 
-}
+    const examPaper = await ExamPaperModel.findOne({ exam: examId, student: studentId })
+        .populate('student', 'name email')
+        .populate('exam', 'title subject semester')
+        .populate('questionPaperSchema', 'mcq subjective code evaluationInstruction difficultyInstruction');
+
+    if (!examPaper) {
+        throw new ApiError(404, 'Exam paper not found for this student');
+    }
+
+    return res.status(200).json(new ApiResponse(200, examPaper, 'Exam paper retrieved successfully'));
+})
+
+export const startExam = asyncHandler(async (req, res) => {
+    const { examId } = req.params;
+    const studentId = req._id;
+
+    if (!examId || !studentId) {
+        throw new ApiError(400, 'Exam ID and Student ID are required');
+    }
+
+    const exam = await Exam.findById(examId)
+        .populate('questionSchema', 'mcq subjective code evaluationInstruction difficultyInstruction')
+        .select('-__v -createdAt -updatedAt -createdBy')
+
+    if (!exam) {
+        throw new ApiError(404, 'Exam not found');
+    }
+
+    if (exam.status !== 'active') {
+        throw new ApiError(400, 'Exam is not active yet. Please wait for the exam to start.');
+    } else if (exam.status === 'completed') {
+        throw new ApiError(400, 'Exam has already been completed');
+    }
+
+    if (exam.examDate < new Date()) {
+        throw new ApiError(400, 'Exam date has already passed');
+    }
+
+    const existingExamPaper = await ExamPaperModel.findOne({ exam: examId, student: studentId });
+
+    if (existingExamPaper) {
+        throw new ApiError(400, 'Exam paper already exists for this student');
+    }
+
+    const payload = {
+        questionPaperSchema: exam.questionSchema,
+        syllabus: exam.syllabusData,
+        marks: exam.totalMarks,
+        duration: exam.durationMinutes,
+        subject: exam.subject,
+    }
+
+    // TODO: Send request to AI service to generate the exam paper and return the generated paper with the certain structure of the exam paper
+    // For now, we will return the payload as is 
+
+    return res.status(200).json(payload)
+})
+

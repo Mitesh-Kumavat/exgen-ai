@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { createExam, deleteExam, getAllExams, getExamById, updateStatus } from '../controller/exam.controller.js';
-import { verifyAdmin } from '../middleware/index.js';
+import { verifyAdmin } from '../middleware/verifyAuth.js';
 const router = Router();
 
 router.post('/', verifyAdmin, createExam);

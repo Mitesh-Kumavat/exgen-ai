@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { login, getAdmin, signUp, logout, uploadStudentFromCsv, deleteStudent, deleteAllStudents, generateRandomPasswords, mailPassword, uploadPDF, deletePDF } from '../controller/admin.controller.js';
-import { verifyAdmin } from "../middleware/index.js";
+import { verifyAdmin } from "../middleware/verifyAuth.js";
 import { uploadMiddleware } from '../middleware/multer.js'
 
 const router = Router();

@@ -34,12 +34,12 @@ const Exam = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "QuestionPaperSchema"
         },
-        chapters: {
-            type: [String],
-            default: []
-        },
-        syllabusPDFs: {
+        syllabusData: {
             type: [{
+                chapter: {
+                    type: String,
+                    required: true
+                },
                 url: {
                     type: String,
                     required: true
@@ -47,6 +47,15 @@ const Exam = new mongoose.Schema(
                 publicId: {
                     type: String,
                     required: true
+                },
+                marks: {
+                    type: Number,
+                    required: true
+                },
+                importantTopics: {
+                    type: String,
+                    required: false,
+                    default: ''
                 }
             }],
             default: []

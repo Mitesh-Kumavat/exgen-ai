@@ -21,7 +21,6 @@ const AnswerSheetSchema = new mongoose.Schema(
                 questionId: { type: mongoose.Schema.Types.ObjectId },
                 answerText: String,
                 marksAwarded: Number,
-                testCaseResults: Array,
                 aiFeedback: String
             }]
         },

@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { verifyAdmin, verifyStudent } from '../middleware/index.js';
-import { generateExamPaperForStudent, getExamPapers } from '../controller/examPaper.controller.js';
+import { verifyAdmin, verifyStudent } from '../middleware/verifyAuth.js';
+import { getExamPapers, startExam } from '../controller/examPaper.controller.js';
 
 const router = Router();
 
 router.get('/', verifyAdmin, getExamPapers)
-router.get('/:studentId', verifyStudent, generateExamPaperForStudent);
+router.post('/:examId', verifyStudent, startExam);
 
 export default router;
