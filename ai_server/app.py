@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from typing import List, Dict
+from schemas.requests_schema import ChunkIDRequest, PDFUploadRequest, QueryRequest
+from schemas.examp_request_schema import ExamPaperRequest
+from llms.paper_generator import generate_exam_paper
 from utils.pdf_vectorizer import (
     add_pdf_to_vectorstore,
     get_chunk_by_id,
@@ -19,17 +20,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-class PDFUploadRequest(BaseModel):
-    pdf_path: str
-    metadata: Dict
-
-class ChunkIDRequest(BaseModel):
-    chunk_ids: List[str]
-
-class QueryRequest(BaseModel):
-    query: str
-    top_k: int = 5
 
 @app.post("/api/v1/vectorize-pdf")
 async def vectorize_pdf(req: PDFUploadRequest):
@@ -80,12 +70,22 @@ async def search_chunks(req: QueryRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# TODO: Implement the following endpoints later
-@app.route('/api/v1/exam-paper', methods=['POST'])
-async def generate_exam_paper():
-    return {"message": "Exam paper generated successfully"}
+@app.post('/api/v1/generate-paper')
+async def generate_paper(req: ExamPaperRequest):
+    try:
+        exam_paper = await generate_exam_paper(req)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e), message="Invalid request data.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e), message="An error occurred while generating the exam paper.")
+    
+    return {
+        "message": "Exam paper generated successfully", 
+        "examPaper": exam_paper
+    }
 
-@app.route('/api/v1/evaluate-exam', methods=['POST'])
+# TODO: Implement the following endpoints later
+@app.post('/api/v1/evaluate-exam')
 async def evaluate_exam_paper():
     return {"message": "Exam paper evaluated successfully"}
 

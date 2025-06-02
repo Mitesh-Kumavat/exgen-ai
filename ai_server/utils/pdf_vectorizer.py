@@ -5,7 +5,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain.schema import Document
 from langchain_huggingface import HuggingFaceEmbeddings
-from llms.llm import find_important_topics
+from llms.important_topic_generator import find_important_topics
 
 load_dotenv()
 
@@ -67,5 +67,5 @@ def delete_all_chunks() -> bool:
         _vectorstore.persist()
         return True
     except Exception as e:
-        print(f"❌ Error deleting all chunks: {e}")
+        print(f"Error deleting all chunks: {e}")
         return False
