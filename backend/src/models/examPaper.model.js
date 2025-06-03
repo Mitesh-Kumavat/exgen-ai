@@ -1,27 +1,27 @@
 import mongoose from 'mongoose';
 
 const McqQuestionSchema = new mongoose.Schema({
-    question: String,
-    options: [{ id: Number, text: String }],
-    correctOption: Number,
+    text: String,
+    options: [String],
+    correctOption: String,
     marks: Number,
 });
 
 const SubjectiveQuestionSchema = new mongoose.Schema({
-    question: String,
+    text: String,
     marks: Number,
 });
 
 const CodeQuestionSchema = new mongoose.Schema({
-    question: String,
-    language: String,
+    text: String,
     marks: Number,
 });
 
 const ExamPaper = new mongoose.Schema({
-    student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
-    exam: { type: mongoose.Schema.Types.ObjectId, ref: "Exam" },
-    answerSheet: { type: mongoose.Schema.Types.ObjectId, ref: "AnswerSheetSchema" },
+    student: { type: mongoose.Schema.Types.ObjectId, ref: "Student", required: true },
+    questionPaperSchema: { type: mongoose.Schema.Types.ObjectId, ref: "QuestionPaperSchema", required: true },
+    exam: { type: mongoose.Schema.Types.ObjectId, ref: "Exam", required: true },
+    answerSheet: { type: mongoose.Schema.Types.ObjectId, ref: "AnswerSheetSchema", default: null },
     questions: {
         mcq: [McqQuestionSchema],
         subjective: [SubjectiveQuestionSchema],

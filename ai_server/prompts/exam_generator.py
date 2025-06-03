@@ -4,15 +4,15 @@ from langchain_core.prompts import PromptTemplate
 response_schemas = [
     ResponseSchema(
         name="mcq_questions",
-        description="List of multiple choice questions. Each question should have text, options, correctOption, and marks. For Ex: {'text': 'Question text', 'options': ['Option A', 'Option B', 'Option C', 'Option D'], 'correctOption': 'A', 'marks': 1}"
+        description="List of multiple choice questions. Each question should have text, options, correctOption, and marks. For Ex-> mcq_questions: {'text': 'Question text', 'options': ['Option A', 'Option B', 'Option C', 'Option D'], 'correctOption': 'A', 'marks': 1}"
     ),
     ResponseSchema(
         name="subjective_questions",
-        description="List of subjective questions with their marks. Each question should have text and marks. For Ex: {'text': 'Question text', 'marks': 5}"
+        description="List of subjective questions with their marks. Each question should have text and marks. For Ex-> subjective_questions: {'text': 'Question text', 'marks': 5}"
     ),
     ResponseSchema(
         name="coding_questions",
-        description="List of coding questions with their marks. Each question should have text and marks. For Ex: {'text': 'Question text', 'marks': 8}"
+        description="List of coding questions with their marks. Each question should have text and marks. For Ex -> coding_questions: {'text': 'Question text', 'marks': 8}"
     ),
 ]
 

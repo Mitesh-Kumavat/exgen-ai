@@ -3,6 +3,7 @@ import { ExamModel as Exam } from "../models/exam.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import ApiError from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
+import { AI_SERVER_URL } from "../constants.js";
 
 export const getExamPapers = async (req, res) => {
     const { examId } = req.params;
@@ -68,7 +69,26 @@ export const startExam = asyncHandler(async (req, res) => {
     const existingExamPaper = await ExamPaperModel.findOne({ exam: examId, student: studentId });
 
     if (existingExamPaper) {
-        throw new ApiError(400, 'Exam paper already exists for this student');
+        if (existingExamPaper.isSubmitted) {
+            throw new ApiError(400, 'You have already submitted this exam paper');
+        }
+
+        const sanitizedPaper = {
+            _id: existingExamPaper._id,
+            student: existingExamPaper.student,
+            exam: existingExamPaper.exam,
+            questions: {
+                mcq: existingExamPaper.questions.mcq.map(({ text, options, marks }) => ({ text, options, marks })),
+                subjective: existingExamPaper.questions.subjective,
+                code: existingExamPaper.questions.code,
+            },
+            isSubmitted: existingExamPaper.isSubmitted,
+            submitTime: existingExamPaper.submitTime,
+            createdAt: existingExamPaper.createdAt,
+            updatedAt: existingExamPaper.updatedAt,
+        };
+
+        return res.status(200).json(new ApiResponse(200, sanitizedPaper, 'Exam paper already started', { examPaperId: existingExamPaper._id }));
     }
 
     const payload = {
@@ -79,9 +99,55 @@ export const startExam = asyncHandler(async (req, res) => {
         subject: exam.subject,
     }
 
-    // TODO: Send request to AI service to generate the exam paper and return the generated paper with the certain structure of the exam paper
-    // For now, we will return the payload as is 
+    const response = await fetch(`${AI_SERVER_URL}/generate-paper`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+    });
 
-    return res.status(200).json(payload)
+    const data = await response.json();
+    console.log('AI Server Response:', data);
+
+
+    if (!response.ok) {
+        console.log(response.status, response.statusText, data);
+
+        throw new ApiError(500, 'Failed to generate exam paper from AI server');
+    }
+
+    const questions = data.examPaper;
+
+    if (!questions || questions.length === 0) {
+        throw new ApiError(500, 'No questions generated for the exam paper');
+    }
+
+    const examPaper = new ExamPaperModel({
+        student: studentId,
+        exam: examId,
+        questionPaperSchema: exam.questionSchema,
+        questions: {
+            mcq: questions.mcq_questions || [],
+            subjective: questions.subjective_questions || [],
+            code: questions.coding_questions || []
+        }
+    });
+
+    await examPaper.save();
+
+    const sanitizedExamPaper = {
+        _id: examPaper._id,
+        student: examPaper.student,
+        exam: examPaper.exam,
+        questions: {
+            mcq: examPaper.questions.mcq.map(({ text, options, marks }) => ({ text, options, marks })),
+            subjective: examPaper.questions.subjective,
+            code: examPaper.questions.code,
+        },
+        isSubmitted: examPaper.isSubmitted,
+    };
+
+    return res.status(200).json(new ApiResponse(200, sanitizedExamPaper, 'Exam started successfully', { examPaperId: examPaper._id }))
 })
 
