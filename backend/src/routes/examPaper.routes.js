@@ -5,6 +5,6 @@ import { getExamPapers, startExam } from '../controller/examPaper.controller.js'
 const router = Router();
 
 router.get('/', verifyAdmin, getExamPapers)
-router.post('/:examId', verifyStudent, startExam);
+router.get('/:examId', verifyStudent, startExam);
 
 export default router;

@@ -78,7 +78,7 @@ export const startExam = asyncHandler(async (req, res) => {
             student: existingExamPaper.student,
             exam: existingExamPaper.exam,
             questions: {
-                mcq: existingExamPaper.questions.mcq.map(({ text, options, marks }) => ({ text, options, marks })),
+                mcq: existingExamPaper.questions.mcq.map(({ text, options, marks, _id }) => ({ text, options, marks, _id })),
                 subjective: existingExamPaper.questions.subjective,
                 code: existingExamPaper.questions.code,
             },
@@ -108,8 +108,6 @@ export const startExam = asyncHandler(async (req, res) => {
     });
 
     const data = await response.json();
-    console.log('AI Server Response:', data);
-
 
     if (!response.ok) {
         console.log(response.status, response.statusText, data);
@@ -141,7 +139,7 @@ export const startExam = asyncHandler(async (req, res) => {
         student: examPaper.student,
         exam: examPaper.exam,
         questions: {
-            mcq: examPaper.questions.mcq.map(({ text, options, marks }) => ({ text, options, marks })),
+            mcq: examPaper.questions.mcq.map(({ text, options, marks, _id }) => ({ text, options, marks, _id })),
             subjective: examPaper.questions.subjective,
             code: examPaper.questions.code,
         },

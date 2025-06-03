@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from prompts.exam_generator import exam_generator_prompt
-from schemas.examp_request_schema import ExamPaperRequest
+from schemas.exam_request_schema import ExamPaperRequest
 from utils.pdf_vectorizer import search_similar_chunks
 from prompts.exam_generator import parser
 import random

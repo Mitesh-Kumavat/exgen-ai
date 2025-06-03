@@ -90,3 +90,4 @@ export const mailPasswordTemplate = (name, enrollmentNumber, password) => {
         </html>
     `;
 };
+

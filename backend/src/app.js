@@ -18,12 +18,14 @@ import studentRouter from "./routes/student.routes.js";
 import examRouter from "./routes/exam.routes.js";
 import examPaperRouter from "./routes/examPaper.routes.js";
 import queryRouter from "./routes/query.routes.js";
+import answerSheetRouter from "./routes/answerSheet.routes.js";
 
 app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/student", studentRouter);
 app.use("/api/v1/exam", examRouter);
 app.use("/api/v1/exam-paper", examPaperRouter);
 app.use("/api/v1/query", queryRouter);
+app.use("/api/v1/answer-sheet", answerSheetRouter);
 
 // Error handling middleware
 import { globalErrorHandler } from "./middleware/errorHandler.js";

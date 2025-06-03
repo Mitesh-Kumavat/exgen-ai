@@ -1,7 +1,9 @@
 from fastapi import FastAPI, HTTPException
 from schemas.requests_schema import ChunkIDRequest, PDFUploadRequest, QueryRequest
-from schemas.examp_request_schema import ExamPaperRequest
+from schemas.exam_request_schema import ExamPaperRequest
+from schemas.exam_evaluation import ExamEvaluationRequest
 from llms.paper_generator import generate_exam_paper
+from llms.exam_evaluator import evaluate_exam_paper
 from utils.pdf_vectorizer import (
     add_pdf_to_vectorstore,
     get_chunk_by_id,
@@ -84,11 +86,18 @@ async def generate_paper(req: ExamPaperRequest):
         "examPaper": exam_paper
     }
 
-# TODO: Implement the following endpoints later
 @app.post('/api/v1/evaluate-exam')
-async def evaluate_exam_paper():
-    return {"message": "Exam paper evaluated successfully"}
-
+async def evaluate_exam(req: ExamEvaluationRequest):
+    try:
+        evaluation_result = await evaluate_exam_paper(req)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e), message="Invalid request data.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e), message="An error occurred while evaluating the exam paper.")
+    return {
+        "message": "Exam paper evaluated successfully",
+        "evaluationResult": evaluation_result
+    }
 
 if __name__ == "__main__":
     import uvicorn
