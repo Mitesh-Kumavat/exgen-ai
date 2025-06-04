@@ -77,9 +77,9 @@ async def generate_paper(req: ExamPaperRequest):
     try:
         exam_paper = await generate_exam_paper(req)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e), message="Invalid request data.")
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e), message="An error occurred while generating the exam paper.")
+        raise HTTPException(status_code=500, detail=str(e))
     
     return {
         "message": "Exam paper generated successfully", 
@@ -91,9 +91,11 @@ async def evaluate_exam(req: ExamEvaluationRequest):
     try:
         evaluation_result = await evaluate_exam_paper(req)
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e), message="Invalid request data.")
+        print(f"Error during evaluation: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e), message="An error occurred while evaluating the exam paper.")
+        print(f"Unexpected error during evaluation: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
     return {
         "message": "Exam paper evaluated successfully",
         "evaluationResult": evaluation_result

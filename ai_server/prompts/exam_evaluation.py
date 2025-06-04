@@ -10,6 +10,10 @@ response_schemas = [
         name="code",
         description="List of coding questions with their marks awarded and aiFeedback. Each question should have questionId, marksAwarded, answerText, aiFeedback. For Ex -> code_questions: {'questionId': '1', 'marksAwarded': 5, 'answerText': 'Answer text', 'aiFeedback': 'Feedback text'}"
     ),
+    ResponseSchema(
+        name="other",
+        description="provide feedbackSummary for the student. It should include overall feedback on the exam performance, strengths, and areas for improvement. The feedback should be constructive and helpful for the student to understand their performance better. For Ex -> feedbackSummary: 'Overall, the student performed well in coding questions but needs improvement in subjective answers.' NOTE: no more than 2 lines. and also provide category from weak, average or topper only. Ex: 'category': 'average' -> (based on the overall performance of the student in the exam paper). The category should be determined based on the marks awarded in subjective and coding questions."
+    )
 ]
 
 parser = StructuredOutputParser.from_response_schemas(response_schemas)

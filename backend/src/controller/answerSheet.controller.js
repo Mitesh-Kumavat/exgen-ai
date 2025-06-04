@@ -4,6 +4,7 @@ import { ExamPaperModel } from "../models/examPaper.model.js";
 import { AI_SERVER_URL } from '../constants.js';
 import { evaluateMcqAnswers, findCodingQuestions, findSubjectiveQuestions } from "../utils/evaluator.js";
 import { ApiResponse } from '../utils/apiResponse.js';
+import { ResultModel } from '../models/result.model.js';
 
 export const submitAnswerSheet = asyncHandler(async (req, res) => {
     const submittedAt = new Date();
@@ -85,6 +86,21 @@ export const submitAnswerSheet = asyncHandler(async (req, res) => {
         { isSubmitted: true, submitTime: submittedAt },
         { answerSheet: answerSheet._id }
     );
+
+    const result = await ResultModel.create({
+        student: studentId,
+        exam: examId,
+        totalMarks: totalMarks,
+        category: data.evaluationResult.other.category,
+        scoreBreakdown: {
+            mcq: mcqTotal,
+            subjective: totalSubjective,
+            code: totalCode
+        },
+        feedbackSummary: data?.evaluationResult.other.feedbackSummary || null
+    })
+
+
 
     return res.status(200).json(new ApiResponse(200, {
         answerSheet,
