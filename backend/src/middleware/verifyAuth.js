@@ -35,8 +35,6 @@ export const verifyStudent = async (req, res, next) => {
             return res.status(403).json(new ApiResponse(401, null, 'Unauthorized access'));
         }
 
-        console.log(decoded.id);
-
         req._id = decoded.id;
         next();
     } catch (error) {

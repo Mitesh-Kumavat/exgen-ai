@@ -74,7 +74,7 @@ export const submitAnswerSheet = asyncHandler(async (req, res) => {
             subjective: data.evaluationResult.subjective,
             code: data.evaluationResult.code
         },
-        totalMarks: totalMarks,
+        achievedMarks: totalMarks,
         isSubmitted: true,
         submitTime: submittedAt,
     });
@@ -90,7 +90,7 @@ export const submitAnswerSheet = asyncHandler(async (req, res) => {
     const result = await ResultModel.create({
         student: studentId,
         exam: examId,
-        totalMarks: totalMarks,
+        achievedMarks: totalMarks,
         category: data.evaluationResult.other.category,
         scoreBreakdown: {
             mcq: mcqTotal,

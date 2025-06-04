@@ -9,7 +9,7 @@ const Result = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Exam"
     },
-    totalMarks: {
+    achievedMarks: {
         type: Number,
         min: 0,
         required: true

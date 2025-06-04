@@ -12,7 +12,7 @@ response_schemas = [
     ),
     ResponseSchema(
         name="other",
-        description="provide feedbackSummary for the student. It should include overall feedback on the exam performance, strengths, and areas for improvement. The feedback should be constructive and helpful for the student to understand their performance better. For Ex -> feedbackSummary: 'Overall, the student performed well in coding questions but needs improvement in subjective answers.' NOTE: no more than 2 lines. and also provide category from weak, average or topper only. Ex: 'category': 'average' -> (based on the overall performance of the student in the exam paper). The category should be determined based on the marks awarded in subjective and coding questions."
+        description="provide feedbackSummary for the student should be in object named 'other'. It should include overall feedback on the exam performance, strengths, and areas for improvement. The feedback should be constructive and helpful for the student to understand their performance better. For Ex -> feedbackSummary: 'Overall, the student performed well in coding questions but needs improvement in subjective answers.' NOTE: no more than 2 lines. and also provide category from weak, average or topper only. Ex: 'category': 'average' -> (based on the overall performance of the student in the exam paper). The category should be determined based on the marks awarded in subjective and coding questions."
     )
 ]
 

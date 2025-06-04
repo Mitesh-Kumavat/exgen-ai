@@ -24,7 +24,7 @@ const AnswerSheetSchema = new mongoose.Schema(
                 aiFeedback: String
             }]
         },
-        totalMarks: Number,
+        achievedMarks: Number,
         isSubmitted: { type: Boolean, default: false },
         submitTime: Date,
     },
