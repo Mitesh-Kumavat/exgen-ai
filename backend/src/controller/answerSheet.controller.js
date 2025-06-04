@@ -6,6 +6,7 @@ import { evaluateMcqAnswers, findCodingQuestions, findSubjectiveQuestions } from
 import { ApiResponse } from '../utils/apiResponse.js';
 
 export const submitAnswerSheet = asyncHandler(async (req, res) => {
+    const submittedAt = new Date();
     const { answers } = req.body;
     const { examId } = req.params;
     const studentId = req._id;
@@ -14,10 +15,9 @@ export const submitAnswerSheet = asyncHandler(async (req, res) => {
         return res.status(400).json(new ApiResponse(400, null, "Answers and exam paper ID are required"));
     }
 
-    const examPaper = await ExamPaperModel.find({
+    const examPaper = await ExamPaperModel.findOne({
         exam: examId,
         student: studentId,
-        isSubmitted: false
     }).populate('questionPaperSchema', "evaluationInstruction");
 
     if (!examPaper) return res.status(404).json(new ApiResponse(404, null, "Exam paper not found"));
@@ -26,17 +26,17 @@ export const submitAnswerSheet = asyncHandler(async (req, res) => {
         return res.status(400).json(new ApiResponse(400, null, "Exam paper already submitted"));
     }
 
-    const instructions = examPaper[0].questionPaperSchema.evaluationInstruction;
+    const instructions = examPaper.questionPaperSchema.evaluationInstruction;
 
     const mcqEvaluated = evaluateMcqAnswers(
         answers.mcq_questions || [],
-        examPaper[0].questions.mcq
+        examPaper.questions.mcq
     );
 
     const mcqTotal = mcqEvaluated.reduce((sum, q) => sum + q.marksAwarded, 0);
 
-    const subjectiveAnswers = findSubjectiveQuestions(answers.subjective_questions || [], examPaper[0].questions.subjective || []);
-    const codeAnswers = findCodingQuestions(answers.coding_questions || [], examPaper[0].questions.code || []);
+    const subjectiveAnswers = findSubjectiveQuestions(answers.subjective_questions || [], examPaper.questions.subjective || []);
+    const codeAnswers = findCodingQuestions(answers.coding_questions || [], examPaper.questions.code || []);
 
     const payload = {
         subjective_answers: subjectiveAnswers,
@@ -50,7 +50,10 @@ export const submitAnswerSheet = asyncHandler(async (req, res) => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
-    })
+    }).catch(err => {
+        console.error("Error connecting to AI server:", err);
+        return res.status(500).json(new ApiResponse(500, null, "Error connecting to AI server"));
+    });
 
     if (!response.ok) {
         return res.status(500).json(new ApiResponse(500, null, "Error evaluating exam paper"));
@@ -58,5 +61,32 @@ export const submitAnswerSheet = asyncHandler(async (req, res) => {
 
     const data = await response.json();
 
-    return res.status(200).json(new ApiResponse(200, payload, "Answer sheet submitted successfully"));
+    const totalCode = data.evaluationResult.code.reduce((sum, q) => sum + q.marksAwarded, 0);
+    const totalSubjective = data.evaluationResult.subjective.reduce((sum, q) => sum + q.marksAwarded, 0);
+    const totalMarks = mcqTotal + totalCode + totalSubjective;
+
+    const answerSheet = new AnswerSheetModel({
+        student: studentId,
+        exam: examId,
+        answers: {
+            mcq: mcqEvaluated,
+            subjective: data.evaluationResult.subjective,
+            code: data.evaluationResult.code
+        },
+        totalMarks: totalMarks,
+        isSubmitted: true,
+        submitTime: submittedAt,
+    });
+
+    await answerSheet.save();
+
+    await ExamPaperModel.updateOne(
+        { _id: examPaper._id },
+        { isSubmitted: true, submitTime: submittedAt },
+        { answerSheet: answerSheet._id }
+    );
+
+    return res.status(200).json(new ApiResponse(200, {
+        answerSheet,
+    }, "Answer sheet submitted successfully"));
 });

@@ -7,7 +7,7 @@ const AnswerSheetSchema = new mongoose.Schema(
         answers: {
             mcq: [{
                 questionId: { type: mongoose.Schema.Types.ObjectId },
-                selectedOption: Number,
+                selectedOption: String,
                 isCorrect: Boolean,
                 marksAwarded: Number
             }],
