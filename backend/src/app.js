@@ -20,6 +20,7 @@ import examPaperRouter from "./routes/examPaper.routes.js";
 import queryRouter from "./routes/query.routes.js";
 import answerSheetRouter from "./routes/answerSheet.routes.js";
 import resultRouter from "./routes/result.routes.js";
+import statsRouter from "./routes/stats.routes.js";
 
 app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/student", studentRouter);
@@ -27,7 +28,8 @@ app.use("/api/v1/exam", examRouter);
 app.use("/api/v1/exam-paper", examPaperRouter);
 app.use("/api/v1/query", queryRouter);
 app.use("/api/v1/answer-sheet", answerSheetRouter);
-app.use("/api/v1/result", resultRouter)
+app.use("/api/v1/result", resultRouter);
+app.use("/api/v1/stats", statsRouter);
 
 // Error handling middleware
 import { globalErrorHandler } from "./middleware/errorHandler.js";
