@@ -14,6 +14,10 @@ const Result = new mongoose.Schema({
         min: 0,
         required: true
     },
+    answerSheet: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "AnswerSheet"
+    },
     category: {
         type: String,
         enum: ['weak', 'average', 'topper']

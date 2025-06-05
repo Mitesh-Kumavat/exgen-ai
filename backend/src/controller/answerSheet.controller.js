@@ -1,7 +1,9 @@
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { AnswerSheetModel } from '../models/answerSheet.model.js';
 import { ExamPaperModel } from "../models/examPaper.model.js";
+import { ExamModel } from '../models/exam.model.js';
 import { AI_SERVER_URL } from '../constants.js';
+import mongoose from 'mongoose';
 import { evaluateMcqAnswers, findCodingQuestions, findSubjectiveQuestions } from "../utils/evaluator.js";
 import { ApiResponse } from '../utils/apiResponse.js';
 import { ResultModel } from '../models/result.model.js';
@@ -83,8 +85,7 @@ export const submitAnswerSheet = asyncHandler(async (req, res) => {
 
     await ExamPaperModel.updateOne(
         { _id: examPaper._id },
-        { isSubmitted: true, submitTime: submittedAt },
-        { answerSheet: answerSheet._id }
+        { isSubmitted: true, submitTime: submittedAt, answerSheet: answerSheet._id },
     );
 
     const result = await ResultModel.create({
@@ -92,6 +93,7 @@ export const submitAnswerSheet = asyncHandler(async (req, res) => {
         exam: examId,
         achievedMarks: totalMarks,
         category: data.evaluationResult.other.category,
+        answerSheet: answerSheet._id,
         scoreBreakdown: {
             mcq: mcqTotal,
             subjective: totalSubjective,
@@ -100,9 +102,89 @@ export const submitAnswerSheet = asyncHandler(async (req, res) => {
         feedbackSummary: data?.evaluationResult.other.feedbackSummary || null
     })
 
-
-
     return res.status(200).json(new ApiResponse(200, {
         answerSheet,
     }, "Answer sheet submitted successfully"));
+});
+
+export const updateMarks = asyncHandler(async (req, res) => {
+    const { answerSheetId } = req.params;
+    const { updates } = req.body;
+
+    if (!Array.isArray(updates) || updates.length === 0) {
+        return res.status(400).json(new ApiResponse(400, null, "Updates array is required"));
+    }
+
+    const validTypes = ['subjective', 'code'];
+
+    const answerSheet = await AnswerSheetModel.findById(answerSheetId);
+    if (!answerSheet) {
+        return res.status(404).json(new ApiResponse(404, null, "Answer sheet not found"));
+    }
+
+    const updatedQuestions = [];
+
+    for (const update of updates) {
+        const { questionType, questionId, newMarks } = update;
+
+        if (!validTypes.includes(questionType) || !mongoose.Types.ObjectId.isValid(questionId)) {
+            continue;
+        }
+
+        const answersArray = answerSheet.answers[questionType];
+        const index = answersArray.findIndex(q => q.questionId.toString() === questionId);
+
+        if (index !== -1) {
+            answersArray[index].marksAwarded = newMarks;
+            updatedQuestions.push({
+                questionType,
+                questionId,
+                newMarks
+            });
+        }
+    }
+
+    const newMcqTotal = answerSheet.answers.mcq.reduce((sum, q) => sum + (q.marksAwarded || 0), 0);
+    const newSubjectiveTotal = answerSheet.answers.subjective.reduce((sum, q) => sum + (q.marksAwarded || 0), 0);
+    const newCodeTotal = answerSheet.answers.code.reduce((sum, q) => sum + (q.marksAwarded || 0), 0);
+    const newAchievedMarks = newMcqTotal + newSubjectiveTotal + newCodeTotal;
+
+    answerSheet.achievedMarks = newAchievedMarks;
+    await answerSheet.save();
+
+    const result = await ResultModel.findOne({ answerSheet: answerSheet._id });
+    if (result) {
+        result.achievedMarks = newAchievedMarks;
+        result.scoreBreakdown = {
+            mcq: newMcqTotal,
+            subjective: newSubjectiveTotal,
+            code: newCodeTotal
+        };
+
+        const totalMarks = (await ExamModel.findById(result.exam))?.totalMarks;
+        const percentage = (newAchievedMarks / totalMarks) * 100;
+
+        result.category = percentage >= 85 ? 'topper' : percentage >= 50 ? 'average' : 'weak';
+        await result.save();
+    }
+
+    return res.status(200).json(new ApiResponse(200, {
+        updatedQuestions,
+        newTotalMarks: newAchievedMarks
+    }, `Marks updated successfully for ${updatedQuestions.length} question(s).`));
+});
+
+export const getAnswerSheetById = asyncHandler(async (req, res) => {
+    const { answerSheetId } = req.params;
+
+    const answerSheet = await AnswerSheetModel.findById(answerSheetId)
+        .populate('student', 'name email')
+        .populate('exam', 'title date')
+        .populate('exam.questionPaperSchema', 'title');
+
+    if (!answerSheet) {
+        return res.status(404).json(new ApiResponse(404, null, "Answer sheet not found"));
+    }
+
+    return res.status(200).json(new ApiResponse(200, answerSheet, "Answer sheet retrieved successfully"));
 });

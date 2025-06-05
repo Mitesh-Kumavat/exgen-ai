@@ -18,7 +18,7 @@ const Query = new mongoose.Schema({
         ref: "ExamPaper"
     },
     isResolved: {
-        type: boolean,
+        type: Boolean,
         default: false
     },
     remarks: {

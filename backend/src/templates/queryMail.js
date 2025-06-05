@@ -1,4 +1,4 @@
-export const mailPasswordTemplate = (name, enrollmentNumber, password) => {
+export const mailQueryResolveTemplate = (name, enrollmentNumber, response) => {
     return `
         <html>
             <head>
@@ -36,17 +36,17 @@ export const mailPasswordTemplate = (name, enrollmentNumber, password) => {
                         margin: 12px 0;
                     }
                     .highlight {
-                        font-weight: 600;
+                        font-weight: bold;
                         color: #000000;
                     }
-                    .credentials-box {
+                    .query-box {
                         background-color: #f1f1f1;
                         padding: 15px 20px;
                         border-left: 4px solid #004080;
                         border-radius: 6px;
-                        margin: 20px 0;
+                        margin-top: 20px;
                     }
-                    .credentials-box p {
+                    .query-box p {
                         margin: 8px 0;
                         font-size: 16px;
                     }
@@ -67,19 +67,19 @@ export const mailPasswordTemplate = (name, enrollmentNumber, password) => {
             <body>
                 <div class="email-container">
                     <div class="email-header">
-                        LJ University Examination Portal
+                        Query Resolution Notification
                     </div>
                     <div class="email-body">
                         <p>Dear ${name},</p>
-                        <p>We hope you are well. Please find below your login credentials for the upcoming online examination.</p>
+                        <p>We are pleased to inform you that your query has been resolved. Below are the details:</p>
 
-                        <div class="credentials-box">
-                            <p>📘 Enrollment Number: <span class="highlight">${enrollmentNumber}</span></p>
-                            <p>🔐 Password: <span class="highlight">${password}</span></p>
+                        <div class="query-box">
+                            <p> Enrollment Number: <span class="highlight">${enrollmentNumber}</span></p>
+                            <p> Response: <span class="highlight">${response}</span></p>
                         </div>
 
-                        <p><strong>Important:</strong> Please save this information securely and do not share it with others. You will be required to use these credentials to log in on the day of the examination.</p>
-                        <p>We wish you the very best in your preparation and success in your exam.</p>
+                        <p>If you have any further questions or concerns, please do not hesitate to reach out.</p>
+                        <p>Thank you for your patience and understanding.</p>
                     </div>
                     <div class="email-footer">
                         Regards,<br/>
@@ -89,4 +89,4 @@ export const mailPasswordTemplate = (name, enrollmentNumber, password) => {
             </body>
         </html>
     `;
-};
+}

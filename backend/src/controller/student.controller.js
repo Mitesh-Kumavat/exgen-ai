@@ -64,7 +64,7 @@ export const registerStudent = asyncHandler(async (req, res) => {
 });
 
 export const getStudentProfile = asyncHandler(async (req, res) => {
-    const student = await Student.findById(req.student._id);
+    const student = await Student.findById(req._id);
 
     if (!student) {
         return res.status(404).json(new ApiResponse(404, 'Student not found', null));

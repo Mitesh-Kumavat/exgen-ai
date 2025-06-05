@@ -21,7 +21,7 @@ const ExamPaper = new mongoose.Schema({
     student: { type: mongoose.Schema.Types.ObjectId, ref: "Student", required: true },
     questionPaperSchema: { type: mongoose.Schema.Types.ObjectId, ref: "QuestionPaperSchema", required: true },
     exam: { type: mongoose.Schema.Types.ObjectId, ref: "Exam", required: true },
-    answerSheet: { type: mongoose.Schema.Types.ObjectId, ref: "AnswerSheetSchema", default: null },
+    answerSheet: { type: mongoose.Schema.Types.ObjectId, ref: "AnswerSheet", default: null },
     questions: {
         mcq: [McqQuestionSchema],
         subjective: [SubjectiveQuestionSchema],
