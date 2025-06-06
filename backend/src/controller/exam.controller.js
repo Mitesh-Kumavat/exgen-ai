@@ -1,9 +1,13 @@
 import { ExamModel as Exam } from "../models/exam.model.js";
+import { ExamPaperModel } from "../models/examPaper.model.js";
+import { AnswerSheetModel } from "../models/answerSheet.model.js";
+import { ResultModel } from "../models/result.model.js";
 import { QuestionPaperSchemaModel } from "../models/questionPaperSchema.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import ApiError from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { deleteFromCloudinary } from "../utils/Cloudinary.js";
+import { QueryModel } from "../models/query.model.js";
 
 export const getAllExams = asyncHandler(async (req, res) => {
     const { status } = req.query;
@@ -127,7 +131,7 @@ export const updateStatus = asyncHandler(async (req, res) => {
     res.status(200).json(apiResponse);
 });
 
-// TODO: Here we also need to delete the question schema associated with the exam and the vector database entries if any so that the exam can be deleted completely.
+// TODO: Delete vectorize data of exam's PDF.
 export const deleteExam = asyncHandler(async (req, res) => {
     const { examId } = req.params;
 
@@ -150,6 +154,10 @@ export const deleteExam = asyncHandler(async (req, res) => {
     }
 
     await QuestionPaperSchemaModel.findOneAndDelete({ exam: examId });
+    await ExamPaperModel.deleteMany({ exam: examId });
+    await QueryModel.deleteMany({ exam: examId });
+    await AnswerSheetModel.deleteMany({ exam: examId });
+    await ResultModel.deleteMany({ exam: examId });
 
     return res.status(200).json(new ApiResponse(200, null, 'Exam deleted successfully'));
 })
