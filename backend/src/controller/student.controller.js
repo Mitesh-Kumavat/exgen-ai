@@ -22,7 +22,7 @@ export const loginStudent = asyncHandler(async (req, res) => {
     const student = await Student.findOne({ enrollmentNumber });
 
     if (!student || !(await student.matchPassword(password))) {
-        return res.status(401).json(new ApiResponse(401, 'Invalid Enrollment number or password', null));
+        return res.status(400).json(new ApiResponse(400, 'Invalid Enrollment number or password', null));
     }
 
     const token = student.generateToken();

@@ -1,0 +1,10 @@
+{
+  "name": "exgenai-monorepo",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run dev --prefix backend\" \"cd ai_server && uvicorn app:app --port 8010 --reload\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

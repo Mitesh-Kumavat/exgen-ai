@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from 'sonner';
 import { BASE_URL } from "./apiPaths";
 
 export const axiosInstance = axios.create({
@@ -26,16 +27,15 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use((res) => {
     return res;
 }, (err) => {
-    console.log(err);
     if (err.response) {
         if (err.response.status === 401) {
-            console.log("Unauthorized, redirected to login...");
+            toast.error("Unauthorized, redirected to login...");
             window.location.href = "/login"
         } else if (err.response.status === 500) {
-            console.log("Server Error. Try again later");
+            toast.error("Server Error. Try again later");
         }
     } else if (err.code === "ECONNABORTED") {
-        console.log("Requsest Timeout. Try again later");
+        toast.error("Request Timeout. Try again later");
     }
 
     return Promise.reject(err)

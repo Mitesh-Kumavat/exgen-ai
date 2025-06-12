@@ -5,7 +5,7 @@ export interface Admin {
 }
 
 export interface AdminAuthState {
-    user: Admin;
+    admin: Admin | null;
     isAuthenticated: boolean;
     login: (email: string, password: string) => Promise<void>;
     logout: () => void;
@@ -20,6 +20,7 @@ export interface StudentAuthState {
 
 export interface Student {
     _id: string;
+    mobile: string;
     name: string;
     email: string;
     enrollmentNumber: string;
