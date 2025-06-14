@@ -8,6 +8,7 @@ export const StudentAuthContext = createContext<StudentAuthState>({
     isAuthenticated: false,
     login: async () => { },
     logout: () => { },
+    setStudent: () => { },
 });
 
 export const StudentAuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -15,11 +16,15 @@ export const StudentAuthProvider = ({ children }: { children: React.ReactNode })
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
     const login = async (enrollmentNumber: string, password: string) => {
-
         const response = await axiosInstance.post(API_ENDPOINTS.AUTH.STUDENT.LOGIN, {
             enrollmentNumber,
             password,
+        }, {
+            withCredentials: true
         });
+
+        const token = response.data.data.token;
+        localStorage.setItem('studentToken', token);
 
         setStudent({
             _id: response.data.data._id,
@@ -35,14 +40,17 @@ export const StudentAuthProvider = ({ children }: { children: React.ReactNode })
     };
 
     const logout = async () => {
-        await axiosInstance.get(API_ENDPOINTS.AUTH.STUDENT.LOGOUT);
         setStudent(null);
         setIsAuthenticated(false);
+        localStorage.removeItem('studentToken');
+        await axiosInstance.get(API_ENDPOINTS.AUTH.STUDENT.LOGOUT, {
+            withCredentials: true
+        });
     };
 
     return (
         <StudentAuthContext.Provider
-            value={{ student, isAuthenticated, login, logout }}
+            value={{ student, isAuthenticated, login, logout, setStudent }}
         >
             {children}
         </StudentAuthContext.Provider>

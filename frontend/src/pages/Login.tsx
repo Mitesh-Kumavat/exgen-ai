@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StudentAuthContext } from '@/context/StudentContext';
 import { AdminAuthContext } from '@/context/AdminContext';
@@ -22,11 +22,19 @@ function Login() {
     const isEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
     const isEnrollment = (value: string) => /^\d{10,}$/.test(value);
 
+    useEffect(() => {
+        if (localStorage.getItem('adminToken')) {
+            navigate('/dashboard');
+        } else {
+            if (localStorage.getItem('studentToken')) {
+                navigate('/exam-window');
+            }
+        }
+    }, [])
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         setError(null);
-
         try {
             if (isEmail(identifier)) {
                 await adminAuth.login(identifier, password);

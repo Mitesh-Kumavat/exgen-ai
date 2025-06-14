@@ -9,6 +9,7 @@ export interface AdminAuthState {
     isAuthenticated: boolean;
     login: (email: string, password: string) => Promise<void>;
     logout: () => void;
+    setAdmin: (admin: Admin | null) => void;
 }
 
 export interface StudentAuthState {
@@ -16,6 +17,7 @@ export interface StudentAuthState {
     isAuthenticated: boolean;
     login: (enrollmentNumber: string, password: string) => Promise<void>;
     logout: () => void;
+    setStudent: (student: Student | null) => void;
 }
 
 export interface Student {

@@ -8,6 +8,7 @@ export const AdminAuthContext = createContext<AdminAuthState>({
     isAuthenticated: false,
     login: async () => { },
     logout: () => { },
+    setAdmin: () => { },
 });
 
 export const AdminAuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -15,11 +16,15 @@ export const AdminAuthProvider = ({ children }: { children: React.ReactNode }) =
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
     const login = async (email: string, password: string) => {
-
         const response = await axiosInstance.post(API_ENDPOINTS.AUTH.ADMIN.LOGIN, {
             email,
             password,
+        }, {
+            withCredentials: true
         });
+
+        const token = response.data.data.token;
+        localStorage.setItem('adminToken', token);
 
         setAdmin({
             _id: response.data.data._id,
@@ -30,14 +35,17 @@ export const AdminAuthProvider = ({ children }: { children: React.ReactNode }) =
     };
 
     const logout = async () => {
-        await axiosInstance.get(API_ENDPOINTS.AUTH.ADMIN.LOGOUT);
+        localStorage.removeItem('adminToken');
         setAdmin(null);
         setIsAuthenticated(false);
+        await axiosInstance.get(API_ENDPOINTS.AUTH.ADMIN.LOGOUT, {
+            withCredentials: true
+        });
     };
 
     return (
         <AdminAuthContext.Provider
-            value={{ admin, isAuthenticated, login, logout }}
+            value={{ admin, isAuthenticated, login, logout, setAdmin }}
         >
             {children}
         </AdminAuthContext.Provider>
