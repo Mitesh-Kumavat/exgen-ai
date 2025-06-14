@@ -27,17 +27,17 @@ export const verifyStudent = async (req, res, next) => {
         const token = req.cookies.token;
 
         if (!token) {
-            return res.status(401).json(new ApiResponse(401, null, 'Unauthorized access'));
+            return res.status(401).json(new ApiResponse(401, null, 'Unauthorized access. token not found'));
         }
 
         const decoded = await verifyToken(token);
         if (!decoded) {
-            return res.status(403).json(new ApiResponse(401, null, 'Unauthorized access'));
+            return res.status(403).json(new ApiResponse(401, null, 'Unauthorized access. token is invalid'));
         }
 
         req._id = decoded.id;
         next();
     } catch (error) {
-        return res.status(403).json(new ApiResponse(401, null, 'Unauthorized access'));
+        return res.status(403).json(new ApiResponse(401, null, 'Unauthorized access. something went wrong'));
     }
 }

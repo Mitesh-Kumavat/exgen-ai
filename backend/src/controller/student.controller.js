@@ -34,7 +34,15 @@ export const loginStudent = asyncHandler(async (req, res) => {
             secure: true,
             maxAge: 4 * 60 * 60 * 1000 // 4 hours only
         })
-        .json(new ApiResponse(200, student, 'Login successful'));
+        .json(new ApiResponse(200, {
+            _id: student._id,
+            name: student.name,
+            enrollmentNumber: student.enrollmentNumber,
+            email: student.email,
+            mobile: student.mobile,
+            branch: student.branch,
+            token: token
+        }, 'Login successful'));
 });
 
 export const registerStudent = asyncHandler(async (req, res) => {

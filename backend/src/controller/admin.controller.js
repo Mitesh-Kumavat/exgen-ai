@@ -53,7 +53,8 @@ export const login = asyncHandler(async (req, res) => {
 
     const apiResponse = new ApiResponse(200, {
         name: admin.name,
-        email: admin.email
+        email: admin.email,
+        token: token
     }, 'Admin logged in successfully');
 
     res
