@@ -47,7 +47,7 @@ export const login = asyncHandler(async (req, res) => {
 
     const admin = await Admin.findOne({ email }).select('+password');
     if (!admin || !(await admin.isPasswordMatched(password))) {
-        throw new ApiError(401, 'Invalid email or password',);
+        throw new ApiError(400, 'Invalid email or password',);
     }
     const token = createToken(admin._id);
 

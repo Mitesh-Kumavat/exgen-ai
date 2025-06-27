@@ -1,5 +1,5 @@
 
-import { PencilIcon, FolderIcon, MailIcon, UsersIcon, LogOutIcon } from 'lucide-react';
+import { PencilIcon, FolderIcon, MailIcon, UsersIcon, LogOutIcon, Home } from 'lucide-react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import {
     Sidebar,
@@ -19,24 +19,29 @@ import { AdminAuthContext } from '@/context/AdminContext';
 
 const menuItems = [
     {
+        title: "Dashboard",
+        url: "/dashboard",
+        icon: Home,
+    },
+    {
+        title: "Manage Students",
+        url: "/dashboard/manage-students",
+        icon: UsersIcon,
+    },
+    {
         title: "Create Exam",
-        url: "/create-exam",
+        url: "/dashboard/create-exam",
         icon: PencilIcon,
     },
     {
         title: "Manage Exams",
-        url: "/manage-exams",
+        url: "/dashboard/manage-exams",
         icon: FolderIcon,
     },
     {
-        title: "Queries",
-        url: "/queries",
+        title: "Manage Queries",
+        url: "/dashboard/manage-queries",
         icon: MailIcon,
-    },
-    {
-        title: "Manage Students",
-        url: "/manage-students",
-        icon: UsersIcon,
     },
 ];
 

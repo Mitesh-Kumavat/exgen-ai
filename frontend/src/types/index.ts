@@ -31,6 +31,17 @@ export interface Student {
     createdAt: string;
 }
 
+export interface ChapterForm {
+    chapter: string;
+    marks: number;
+    file: File | null;
+    uploadData?: {
+        url: string;
+        publicId: string;
+        importantTopics: string;
+    };
+}
+
 export interface Exam {
     _id: string;
     title: string;

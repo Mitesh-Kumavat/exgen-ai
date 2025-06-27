@@ -9,7 +9,11 @@ import { Toaster } from 'sonner'
 import { AdminAuthProvider } from '@/context/AdminContext.tsx'
 import ExamLayout from '@/components/layouts/ExamLayout.tsx'
 import DashboardLayout from '@/components/layouts/DashboardLayout.tsx'
-import Dashboard from './pages/Dashboard'
+import Dashboard from '@/pages/Admin/Dashboard'
+import ManageExam from '@/pages/Admin/ManageExam'
+import ManageStudents from '@/pages/Admin/ManageStudents'
+import ManageQueries from '@/pages/Admin/ManageQueries'
+import CreateExam from '@/pages/Admin/CreateExam'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,12 +28,26 @@ const router = createBrowserRouter(
       </Route>
 
       {/* All admin protected routes for the dashboard */}
-      <Route path='/dashboard' element={
-        <DashboardLayout>
+      <Route path='/dashboard'>
+        <Route index element={<DashboardLayout >
           <Dashboard />
-        </DashboardLayout>
-      } >
+        </DashboardLayout>} />
 
+        <Route path='create-exam' element={<DashboardLayout >
+          <CreateExam />
+        </DashboardLayout>} />
+
+        <Route path='manage-exams' element={<DashboardLayout >
+          <ManageExam />
+        </DashboardLayout>} />
+
+        <Route path='manage-students' element={<DashboardLayout >
+          <ManageStudents />
+        </DashboardLayout>} />
+
+        <Route path='manage-queries' element={<DashboardLayout >
+          <ManageQueries />
+        </DashboardLayout>} />
       </Route >
     </>
   )

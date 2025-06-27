@@ -63,8 +63,7 @@ def get_all_chunks() -> List[Document]:
     
 def delete_all_chunks() -> bool:
     try:
-        _vectorstore._collection.delete(where={}) 
-        _vectorstore.persist()
+        _vectorstore._collection.delete(ids=None)  
         return True
     except Exception as e:
         print(f"Error deleting all chunks: {e}")

@@ -4,13 +4,13 @@ import { axiosInstance } from '@/utils/axiosInstance'
 import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const ProtectedStudent = ({ children }: {
+const ProtectedAdmin = ({ children }: {
     children: React.ReactNode
 }) => {
 
     const navigate = useNavigate()
+    const { logout, setAdmin } = useContext(AdminAuthContext);
     useEffect(() => {
-        const { logout, setAdmin } = useContext(AdminAuthContext);
         const verifyAdmin = async () => {
             try {
                 const response = await axiosInstance.get(API_ENDPOINTS.AUTH.ADMIN.PROFILE, {
@@ -42,4 +42,4 @@ const ProtectedStudent = ({ children }: {
     )
 }
 
-export default ProtectedStudent
+export default ProtectedAdmin

@@ -8,7 +8,7 @@ const ProtectedStudent = ({ children }: {
     children: React.ReactNode
 }) => {
     const navigate = useNavigate();
-    const { logout, setStudent } = useContext(StudentAuthContext)
+    const { logout, setStudent } = useContext(StudentAuthContext);
 
     useEffect(() => {
         const verifyStudent = async () => {

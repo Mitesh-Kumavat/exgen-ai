@@ -4,11 +4,7 @@ import { BASE_URL } from "./apiPaths";
 
 export const axiosInstance = axios.create({
     baseURL: BASE_URL,
-    timeout: 10000,
-    headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-    }
+    timeout: 40000,
 })
 
 axiosInstance.interceptors.request.use((config) => {
@@ -27,7 +23,9 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use((res) => {
     return res;
 }, (err) => {
+    console.log("Error in response interceptor:", err);
     if (err.response) {
+        console.log(err.response);
         if (err.response.status === 401) {
             toast.error("Unauthorized, redirected to login...");
             window.location.href = "/login"

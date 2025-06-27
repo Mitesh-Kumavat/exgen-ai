@@ -68,6 +68,8 @@ export const createExam = asyncHandler(async (req, res) => {
 
     for (const syllabus of syllabusData) {
         if (!syllabus.chapter || !syllabus.url || !syllabus.publicId || !syllabus.marks) {
+            console.log('syllabusData', syllabus);
+
             throw new ApiError(400, 'All syllabus fields are required');
         }
     }
