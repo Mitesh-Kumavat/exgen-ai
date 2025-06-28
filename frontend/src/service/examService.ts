@@ -11,3 +11,12 @@ export const uploadChapterPDF = (chapter: string, file: File) => {
 export const createExamDraft = (payload: any) => {
     return axiosInstance.post(API_ENDPOINTS.EXAM.CREATE, payload, { withCredentials: true });
 };
+
+export const getAllExamData = (status: string) => {
+    console.log(`Fetching exams with status: ${status}`);
+    return axiosInstance.get(API_ENDPOINTS.EXAM.GET_ALL(status), { withCredentials: true });
+}
+
+export const updateExamStatus = (examId: string, newStatus: string) => {
+    return axiosInstance.put(API_ENDPOINTS.EXAM.UPDATE_STATUS(examId), { status: newStatus }, { withCredentials: true });
+}

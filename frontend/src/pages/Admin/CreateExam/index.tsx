@@ -96,26 +96,34 @@ export default function CreateExam() {
     };
 
     return (
-        <div className="max-w-4xl mx-auto space-y-6 p-6">
-            <Card>
-                <CardContent className="pt-6">
-                    <ExamInfo formData={formData} handleFormChange={handleFormChange} />
-                </CardContent>
-            </Card>
+        <>
+            <div className="container mx-auto p-6 pb-0 max-sm:p-2">
+                <div className="flex flex-col space-y-4">
+                    <h1 className="text-3xl font-bold tracking-tight">Create Exam</h1>
+                    <p className="text-muted-foreground">Create a new exam with few steps</p>
+                </div>
+            </div>
+            <div className="max-w-full mx-auto space-y-6 p-5 max-sm:p-1">
+                <Card>
+                    <CardContent className="pt-6">
+                        <ExamInfo formData={formData} handleFormChange={handleFormChange} />
+                    </CardContent>
+                </Card>
 
-            <Card>
-                <CardContent className="pt-6">
-                    <QuestionSchemaForm schema={questionSchema} setSchema={setQuestionSchema} />
-                </CardContent>
-            </Card>
+                <Card>
+                    <CardContent className="pt-6">
+                        <QuestionSchemaForm schema={questionSchema} setSchema={setQuestionSchema} />
+                    </CardContent>
+                </Card>
 
-            <Card>
-                <CardContent className="pt-6">
-                    <ChapterFormList chapters={chapters} setChapters={setChapters} uploadingIndex={uploadingIndex} uploadPDF={uploadPDF} />
-                </CardContent>
-            </Card>
+                <Card>
+                    <CardContent className="pt-6">
+                        <ChapterFormList chapters={chapters} setChapters={setChapters} uploadingIndex={uploadingIndex} uploadPDF={uploadPDF} />
+                    </CardContent>
+                </Card>
 
-            <div className="flex justify-end"><Button onClick={createExam} disabled={creating}>{creating ? "Creating..." : "Create Exam"}</Button></div>
-        </div>
+                <div className="flex justify-end"><Button onClick={createExam} disabled={creating}>{creating ? "Creating..." : "Create Exam"}</Button></div>
+            </div>
+        </>
     );
 }
