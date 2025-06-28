@@ -1,8 +1,8 @@
 
-const index = () => {
+const ManageQueries = () => {
     return (
         <div>Manage queries</div>
     )
 }
 
-export default index
+export default ManageQueries

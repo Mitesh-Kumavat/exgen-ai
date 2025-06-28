@@ -76,11 +76,11 @@ const ManageExams = () => {
     }
 
     const handleViewDetails = (examId: string) => {
-        navigate(`/manage-exams/${examId}`);
+        navigate(`/dashboard/manage-exams/${examId}`);
     }
 
     const handleViewResult = (examId: string) => {
-        navigate(`/manage-exams/${examId}/result`);
+        navigate(`/dashboard/manage-exams/${examId}/result`);
     }
 
     return (

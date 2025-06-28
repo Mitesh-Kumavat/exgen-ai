@@ -60,7 +60,7 @@ export interface Exam {
 
 export interface SyllabusChapter {
     _id: string;
-    chapterName: string;
+    chapter: string;
     url?: string;
     publicId?: string;
     marks: number;
@@ -84,4 +84,17 @@ export interface QuestionSchema {
     };
     evaluationInstruction: string;
     difficultyInstruction: string;
+}
+
+export interface ExamDetail extends Omit<Exam, "semester" | "examDate" | "duration" | "syllabusData"> {
+    semester: number;
+    examDate: string;
+    durationMinutes: number;
+    syllabusData: (SyllabusChapter & { importantTopics?: string })[];
+    createdBy: {
+        _id: string;
+        name: string;
+        email: string;
+    };
+    updatedAt: string;
 }

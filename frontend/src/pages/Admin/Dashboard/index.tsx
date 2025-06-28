@@ -1,8 +1,7 @@
-
-const index = () => {
+const Dashboard = () => {
     return (
         <div>Dashboard page</div>
     )
 }
 
-export default index
+export default Dashboard

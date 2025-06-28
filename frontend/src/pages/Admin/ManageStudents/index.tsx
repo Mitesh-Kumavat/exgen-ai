@@ -1,7 +1,7 @@
-const index = () => {
+const ManageStudents = () => {
     return (
         <div>Manage Students</div>
     )
 }
 
-export default index
+export default ManageStudents

@@ -20,3 +20,15 @@ export const getAllExamData = (status: string) => {
 export const updateExamStatus = (examId: string, newStatus: string) => {
     return axiosInstance.put(API_ENDPOINTS.EXAM.UPDATE_STATUS(examId), { status: newStatus }, { withCredentials: true });
 }
+
+export const getExamDetail = (examId: string) => {
+    return axiosInstance.get(API_ENDPOINTS.EXAM.GET_BY_ID(examId), { withCredentials: true });
+}
+
+export const deleteExam = (examId: string) => {
+    return axiosInstance.delete(API_ENDPOINTS.EXAM.DELETE_BY_ID(examId), { withCredentials: true });
+}
+
+export const getExamResults = (examId: string) => {
+    return axiosInstance.get(API_ENDPOINTS.RESULT.GET_ALL_BY_EXAM_ID(examId), { withCredentials: true });
+}

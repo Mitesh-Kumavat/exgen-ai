@@ -11,9 +11,11 @@ import ExamLayout from '@/components/layouts/ExamLayout.tsx'
 import DashboardLayout from '@/components/layouts/DashboardLayout.tsx'
 import Dashboard from '@/pages/Admin/Dashboard'
 import ManageExam from '@/pages/Admin/ManageExam'
+import ExamDetail from '@/pages/Admin/ExamDetail'
 import ManageStudents from '@/pages/Admin/ManageStudents'
 import ManageQueries from '@/pages/Admin/ManageQueries'
 import CreateExam from '@/pages/Admin/CreateExam'
+import ExamResult from '@/pages/Admin/ExamResult'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,9 +39,23 @@ const router = createBrowserRouter(
           <CreateExam />
         </DashboardLayout>} />
 
-        <Route path='manage-exams' element={<DashboardLayout >
-          <ManageExam />
-        </DashboardLayout>} />
+        <Route path='manage-exams'>
+          <Route index element={
+            <DashboardLayout >
+              <ManageExam />
+            </DashboardLayout>} />
+
+          <Route path=':examId' element={
+            <DashboardLayout >
+              <ExamDetail />
+            </DashboardLayout>} />
+
+          <Route path=':examId/result' element={
+            <DashboardLayout >
+              <ExamResult />
+            </DashboardLayout>} />
+
+        </Route>
 
         <Route path='manage-students' element={<DashboardLayout >
           <ManageStudents />
