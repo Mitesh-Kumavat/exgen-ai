@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client'
 import { ThemeProvider } from "@/components/theme-provider"
 import '@/index.css'
 import App from '@/App.tsx'
-import Login from '@/pages/auth/Login'
+import Login from '@/pages/auth/login'
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
 import { StudentAuthProvider } from '@/context/StudentContext.tsx'
 import { Toaster } from 'sonner'
@@ -26,7 +26,7 @@ const router = createBrowserRouter(
 
       {/* All student protected routes for the exam */}
       <Route path='/exam-window' element={<ExamLayout />} >
-        
+
       </Route>
 
       {/* All admin protected routes for the dashboard */}
