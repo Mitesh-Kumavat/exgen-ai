@@ -29,6 +29,7 @@ export interface Student {
     semester: string;
     branch: string;
     createdAt: string;
+    password?: string;
 }
 
 export interface ChapterForm {

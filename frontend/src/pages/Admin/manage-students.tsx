@@ -112,6 +112,7 @@ const ManageStudents = () => {
             const data = await generateRandomPasswords()
             if (data.status === 200) {
                 toast.success("Passwords generated successfully")
+                fetchStudents()
             } else {
                 toast.error("Failed to generate passwords")
             }

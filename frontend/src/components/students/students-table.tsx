@@ -104,6 +104,7 @@ export const StudentsTable = ({ students, loading, onDeleteStudent }: StudentsTa
                                         <TableHead>Branch</TableHead>
                                         <TableHead className="hidden sm:table-cell">Email</TableHead>
                                         <TableHead className="hidden md:table-cell">Mobile</TableHead>
+                                        <TableHead className="hidden lg:table-cell">Password</TableHead>
                                         <TableHead className="hidden lg:table-cell">Created At</TableHead>
                                         <TableHead className="text-right">Actions</TableHead>
                                     </TableRow>
@@ -118,7 +119,7 @@ export const StudentsTable = ({ students, loading, onDeleteStudent }: StudentsTa
                                                 </div>
                                             </TableCell>
                                             <TableCell>
-                                                <Badge variant="outline" className="font-mono text-xs">
+                                                <Badge variant="default" className="font-mono text-xs">
                                                     {student.enrollmentNumber}
                                                 </Badge>
                                             </TableCell>
@@ -136,6 +137,11 @@ export const StudentsTable = ({ students, loading, onDeleteStudent }: StudentsTa
                                                     <Phone className="h-3 w-3 text-muted-foreground" />
                                                     <span className="text-sm">{student.mobile}</span>
                                                 </div>
+                                            </TableCell>
+                                            <TableCell className="hidden md:table-cell">
+                                                <Badge variant="outline" className="font-mono text-xs">
+                                                    {student.password || "N/A"}
+                                                </Badge>
                                             </TableCell>
                                             <TableCell className="hidden lg:table-cell text-sm text-muted-foreground">
                                                 {new Date(student.createdAt).toLocaleDateString()}

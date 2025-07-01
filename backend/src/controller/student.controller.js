@@ -3,7 +3,7 @@ import { asyncHandler } from '../utils/asyncHandler.js'
 import { ApiResponse } from '../utils/apiResponse.js';
 
 export const getAllStudents = asyncHandler(async (req, res) => {
-    const students = await Student.find({}).select('-password -__v');
+    const students = await Student.find({}).select(' -__v');
 
     if (!students || students.length === 0) {
         return res.status(404).json(new ApiResponse(404, 'No students found', null));
