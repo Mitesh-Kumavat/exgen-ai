@@ -142,12 +142,12 @@ const ManageStudents = () => {
     }
 
     return (
-        <div className="container mx-auto p-4 md:p-6 space-y-6">
+        <div className="container mx-auto p-4 md:p-6 space-y-6 md:pt-0">
             {/* Header */}
             <div className="flex flex-col space-y-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Manage Students</h1>
+                        <h1 className="text-3xl font-bold tracking-tight ">Manage Students</h1>
                         <p className="text-muted-foreground">Manage student accounts and credentials</p>
                     </div>
                     <Button onClick={() => setAddModalOpen(true)} className="gap-2">

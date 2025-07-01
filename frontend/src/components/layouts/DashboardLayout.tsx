@@ -1,6 +1,7 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from './AppSidebar';
 import ProtectedAdmin from "../protected/ProtectedAdmin";
+import { ModeToggle } from "../mode-toggle";
 
 const DashboardLayout = ({ children }: {
     children: React.ReactNode;
@@ -17,6 +18,7 @@ const DashboardLayout = ({ children }: {
                                 <div className="flex-1">
                                     <h1 className="text-xl font-semibold text-foreground">Dashboard</h1>
                                 </div>
+                                <ModeToggle />
                             </div>
                         </header>
                         <div className="flex-1 p-6 overflow-auto">

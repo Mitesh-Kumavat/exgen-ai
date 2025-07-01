@@ -82,7 +82,7 @@ const ExamDetailPage = () => {
 
     if (!details) {
         return (
-            <div className="container mx-auto p-6">
+            <div className="container mx-auto p-6 pb-2">
                 <div className="text-center py-12">
                     <p className="text-muted-foreground text-lg">Exam not found</p>
                 </div>

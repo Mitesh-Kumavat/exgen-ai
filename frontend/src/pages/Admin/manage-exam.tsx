@@ -84,8 +84,8 @@ const ManageExams = () => {
     }
 
     return (
-        <div className="container mx-auto p-6 space-y-6 max-sm:p-2">
-            <div className="flex flex-col space-y-4">
+        <div className="container mx-auto p-6 space-y-6 pt-0 max-sm:p-2">
+            <div className="flex flex-col">
                 <h1 className="text-3xl font-bold tracking-tight">Manage Exams</h1>
                 <p className="text-muted-foreground">Manage and monitor all your exams in one place</p>
             </div>

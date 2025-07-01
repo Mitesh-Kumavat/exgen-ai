@@ -97,8 +97,8 @@ export default function CreateExam() {
 
     return (
         <>
-            <div className="container mx-auto p-6 pb-0 max-sm:p-2">
-                <div className="flex flex-col space-y-4">
+            <div className="container mx-auto p-6 py-0 max-sm:p-2">
+                <div className="flex flex-col">
                     <h1 className="text-3xl font-bold tracking-tight">Create Exam</h1>
                     <p className="text-muted-foreground">Create a new exam with few steps</p>
                 </div>
