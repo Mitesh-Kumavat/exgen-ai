@@ -104,11 +104,17 @@ export const uploadStudentFromCsv = asyncHandler(async (req, res) => {
         return res.status(400).json(new ApiResponse(400, 'No valid data found in CSV file', null));
     }
 
-    const students = await Student.insertMany(studentsData);
-
     deleteFile(req.file.path);
-
-    return res.status(201).json(new ApiResponse(201, students, 'Students uploaded successfully'));
+    
+    try {
+        const students = await Student.insertMany(studentsData);
+        return res.status(201).json(new ApiResponse(201, students, 'Students uploaded successfully'));
+    } catch (error) {
+        if (error.code === 11000) {
+            return res.status(400).json(new ApiResponse(400, 'Duplicate enrollment numbers found in the CSV file. Please verify your CSV.', null));
+        }
+        return res.status(500).json(new ApiResponse(500, 'Failed to upload students', null));
+    }
 });
 
 export const deleteStudent = asyncHandler(async (req, res) => {
