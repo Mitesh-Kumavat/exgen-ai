@@ -1,4 +1,3 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { ThemeProvider } from "@/components/theme-provider"
 import '@/index.css'
@@ -27,7 +26,7 @@ const router = createBrowserRouter(
 
       {/* All student protected routes for the exam */}
       <Route path='/exam-window' element={<ExamLayout />} >
-
+        
       </Route>
 
       {/* All admin protected routes for the dashboard */}
@@ -71,14 +70,12 @@ const router = createBrowserRouter(
 )
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <AdminAuthProvider>
-        <StudentAuthProvider>
-          <RouterProvider router={router} />
-        </StudentAuthProvider>
-      </AdminAuthProvider>
-    </ThemeProvider>
+  <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <AdminAuthProvider>
+      <StudentAuthProvider>
+        <RouterProvider router={router} />
+      </StudentAuthProvider>
+    </AdminAuthProvider>
     <Toaster />
-  </StrictMode>,
+  </ThemeProvider>
 )

@@ -1,7 +1,4 @@
-"use client"
-
 import type React from "react"
-
 import { useState } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -90,7 +87,7 @@ export const AddStudentModal = ({ open, onOpenChange, onAddStudent, onBulkAddStu
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-2xl md:overflow-clip max-h-[90vh] overflow-y-auto mx-auto">
                 <DialogHeader>
                     <DialogTitle>Add Students</DialogTitle>
                     <DialogDescription>Add students individually or upload a CSV file with multiple students</DialogDescription>
