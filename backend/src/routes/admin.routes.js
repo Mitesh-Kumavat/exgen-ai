@@ -13,7 +13,7 @@ router.get('/', verifyAdmin, getAdmin)
 // admin actions on student data...
 router.post('/bulk-upload', verifyAdmin, uploadMiddleware, uploadStudentFromCsv)
 router.delete('/student/:id', verifyAdmin, deleteStudent)
-router.delete('/bluk-delete', verifyAdmin, deleteAllStudents);
+router.delete('/bulk-delete', verifyAdmin, deleteAllStudents);
 router.get('/generate-password', verifyAdmin, generateRandomPasswords);
 router.get('/mail-password', verifyAdmin, mailPassword);
 
