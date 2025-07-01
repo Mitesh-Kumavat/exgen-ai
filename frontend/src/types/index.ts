@@ -98,3 +98,11 @@ export interface ExamDetail extends Omit<Exam, "semester" | "examDate" | "durati
     };
     updatedAt: string;
 }
+
+export interface StudentFormData {
+    name: string
+    enrollmentNumber: string
+    branch: string
+    email: string
+    mobile: string
+}

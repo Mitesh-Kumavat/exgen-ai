@@ -2,20 +2,20 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import '@/index.css'
 import App from '@/App.tsx'
-import Login from '@/pages/Login.tsx'
+import Login from '@/pages/auth/Login'
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
 import { StudentAuthProvider } from '@/context/StudentContext.tsx'
 import { Toaster } from 'sonner'
 import { AdminAuthProvider } from '@/context/AdminContext.tsx'
 import ExamLayout from '@/components/layouts/ExamLayout.tsx'
 import DashboardLayout from '@/components/layouts/DashboardLayout.tsx'
-import Dashboard from '@/pages/Admin/Dashboard'
-import ManageExam from '@/pages/Admin/ManageExam'
-import ExamDetail from '@/pages/Admin/ExamDetail'
-import ManageStudents from '@/pages/Admin/ManageStudents'
-import ManageQueries from '@/pages/Admin/ManageQueries'
-import CreateExam from '@/pages/Admin/CreateExam'
-import ExamResult from '@/pages/Admin/ExamResult'
+import Dashboard from '@/pages/Admin/dashboard'
+import ManageExam from '@/pages/Admin/manage-exam'
+import ExamDetailPage from '@/pages/Admin/exam-detail'
+import ManageStudents from '@/pages/Admin/manage-students'
+import ManageQueries from '@/pages/Admin/manage-queries'
+import CreateExam from '@/pages/Admin/create-exam'
+import ExamResult from '@/pages/Admin/exam-results'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -47,7 +47,7 @@ const router = createBrowserRouter(
 
           <Route path=':examId' element={
             <DashboardLayout >
-              <ExamDetail />
+              <ExamDetailPage />
             </DashboardLayout>} />
 
           <Route path=':examId/result' element={

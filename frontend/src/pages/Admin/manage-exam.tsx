@@ -2,14 +2,14 @@
 
 import { getAllExamData, updateExamStatus } from "@/service/examService"
 import { useEffect, useState } from "react"
-import { ExamCard } from "./ExamCard"
-import { SearchAndFilter } from "./SearchAndFilter"
+import { ExamCard } from "@/components/manage-exam/exam-card"
+import { SearchAndFilter } from "@/components/manage-exam/search-and-filter"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { extractErrorMessage } from "@/utils/errorHandler"
 
 export interface ExamData {
-    _id: string
+    _id: string,
     title: string
     description: string
     subject: string

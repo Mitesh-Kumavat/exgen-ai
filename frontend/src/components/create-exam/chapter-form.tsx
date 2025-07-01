@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ChapterCard } from "./ChapterCard";
+import { ChapterCard } from "./chapter-card";
 import type { ChapterForm } from "@/types";
 
 export const ChapterFormList = ({

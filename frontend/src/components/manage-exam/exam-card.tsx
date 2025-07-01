@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, Clock, GraduationCap, Target, BookOpen } from "lucide-react"
-import type { ExamData } from "@/pages/Admin/ManageExam/index"
+import type { ExamData } from "@/pages/Admin/manage-exam"
 
 interface ExamCardProps {
     exam: ExamData

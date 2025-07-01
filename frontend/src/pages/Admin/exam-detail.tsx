@@ -3,15 +3,15 @@ import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { extractErrorMessage } from "@/utils/errorHandler"
-import { ExamHeader } from "./ExamHeader"
-import { ExamInfo } from "./ExamInfo"
-import { SyllabusSection } from "./SyllabusSection"
-import { QuestionSchemaSection } from "./QuestionSchemaSection"
-import { DeleteConfirmationModal } from "./DeleteConfirmationModal"
-import { LoadingCard } from "./LoadingCard"
+import { ExamHeader } from "@/components/exam-detail/exam-header"
+import { ExamInfo } from "@/components/exam-detail/exam-info"
+import { SyllabusSection } from "@/components/exam-detail/syllabus-section"
+import { QuestionSchemaSection } from "@/components/exam-detail/question-schema-section"
+import { DeleteConfirmationModal } from "@/components/exam-detail/delete-confirmation"
+import { LoadingCard } from "@/components/exam-detail/loading-card"
 import type { ExamDetail } from "@/types"
 
-const ExamDetail = () => {
+const ExamDetailPage = () => {
     const { examId } = useParams()
     const navigate = useNavigate()
     const [details, setDetails] = useState<ExamDetail | null>(null)
@@ -119,4 +119,4 @@ const ExamDetail = () => {
     )
 }
 
-export default ExamDetail
+export default ExamDetailPage
