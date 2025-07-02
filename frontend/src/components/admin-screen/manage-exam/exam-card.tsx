@@ -57,32 +57,35 @@ export const ExamCard = ({ exam, onStatusChange, onViewDetails, onViewResult }: 
                     <CardTitle className="text-lg font-semibold line-clamp-2">{exam.title}</CardTitle>
                     <Badge className={getStatusColor(exam.status)}>{exam.status}</Badge>
                 </div>
+                <p className="text-sm text-muted-foreground line-clamp-2">{exam.description}</p>
             </CardHeader>
 
             <CardContent className="space-y-3">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <BookOpen className="h-4 w-4" />
-                    <span>{exam.subject}</span>
+                <div className="grid grid-cols-2 gap-3">
+                    <div className="flex items-center gap-2 text-sm">
+                        <BookOpen className="h-4 w-4 text-primary" />
+                        <span className="font-medium">{exam.subject}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-sm">
+                        <GraduationCap className="h-4 w-4 text-primary" />
+                        <span>Sem {exam.semester}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-sm">
+                        <Clock className="h-4 w-4 text-primary" />
+                        <span>{exam.durationMinutes} min</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 text-sm">
+                        <Target className="h-4 w-4 text-primary" />
+                        <span>{exam.totalMarks} marks</span>
+                    </div>
                 </div>
 
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Calendar className="h-4 w-4" />
-                    <span>{new Date(exam.examDate).toLocaleDateString()}</span>
-                </div>
-
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <GraduationCap className="h-4 w-4" />
-                    <span>Semester {exam.semester}</span>
-                </div>
-
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Target className="h-4 w-4" />
-                    <span>{exam.totalMarks} marks</span>
-                </div>
-
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Clock className="h-4 w-4" />
-                    <span>{exam.durationMinutes} minutes</span>
+                    <span>Exam Date: {new Date(exam.examDate).toLocaleDateString()}</span>
                 </div>
             </CardContent>
 
