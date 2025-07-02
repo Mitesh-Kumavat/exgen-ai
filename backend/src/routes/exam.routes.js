@@ -4,7 +4,7 @@ import { verifyAdmin } from '../middleware/verifyAuth.js';
 const router = Router();
 
 router.post('/', verifyAdmin, createExam);
-router.get('/', verifyAdmin, getAllExams);
+router.get('/', getAllExams);
 router.get('/:examId', verifyAdmin, getExamById);
 router.put('/:examId', verifyAdmin, updateStatus);
 router.delete('/:examId', verifyAdmin, deleteExam);

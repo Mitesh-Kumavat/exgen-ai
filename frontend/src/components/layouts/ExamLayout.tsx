@@ -1,11 +1,11 @@
 import ProtectedStudent from '@/components/protected/ProtectedStudent'
 
-const ExamLayout = () => {
+const ExamLayout = ({ children }: {
+    children: React.ReactNode
+}) => {
     return (
         <ProtectedStudent>
-            <div className='flex flex-col items-center justify-center h-screen bg-gray-100'>
-                <div className='text-2xl font-bold mb-4'>Exam Portal</div>
-            </div>
+            {children}
         </ProtectedStudent>
     )
 }

@@ -32,3 +32,11 @@ export const deleteExam = (examId: string) => {
 export const getExamResults = (examId: string) => {
     return axiosInstance.get(API_ENDPOINTS.RESULT.GET_ALL_BY_EXAM_ID(examId), { withCredentials: true });
 }
+
+export const generateExamPaper = (examId: string) => {
+    return axiosInstance.get(API_ENDPOINTS.STUDENT.EXAM.START_EXAM(examId), { withCredentials: true });
+}
+
+export const submitExam = (examId: string, answers: any) => {
+    return axiosInstance.post(API_ENDPOINTS.STUDENT.EXAM.SUBMIT_EXAM(examId), { answers }, { withCredentials: true });
+}

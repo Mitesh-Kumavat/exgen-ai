@@ -107,3 +107,85 @@ export interface StudentFormData {
     email: string
     mobile: string
 }
+
+export interface ExamData {
+    _id: string
+    title: string
+    description: string
+    subject: string
+    semester: number
+    durationMinutes: number
+    totalMarks: number
+    passingMarks: number
+    examDate: string
+    createdAt: string
+    createdBy: string
+    status: string
+}
+
+export interface MCQQuestion {
+    _id: string
+    text: string
+    options: string[]
+    marks: number
+}
+
+export interface SubjectiveQuestion {
+    _id: string
+    text: string
+    marks: number
+}
+
+export interface CodeQuestion {
+    _id: string
+    text: string
+    marks: number
+}
+
+export interface Questions {
+    mcq: MCQQuestion[]
+    subjective: SubjectiveQuestion[]
+    code: CodeQuestion[]
+}
+
+export interface ExamPaper {
+    _id: string
+    student: string
+    exam: ExamData
+    questions: Questions
+    isSubmitted: boolean
+    createdAt: string
+    updatedAt: string
+}
+
+export interface MCQAnswer {
+    questionId: string
+    selectedOption: string
+}
+
+export interface SubjectiveAnswer {
+    questionId: string
+    answerText: string
+}
+
+export interface CodeAnswer {
+    questionId: string
+    answerText: string
+}
+
+export interface AnswerData {
+    mcq_questions: MCQAnswer[]
+    subjective_questions: SubjectiveAnswer[]
+    coding_questions: CodeAnswer[]
+}
+
+export interface ExamProgress {
+    answers: AnswerData
+    examPaper: ExamPaper
+    lastSaved: string
+}
+
+export interface TimerState {
+    startTime: number
+    durationMinutes: number
+}

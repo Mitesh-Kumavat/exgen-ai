@@ -16,6 +16,8 @@ import ManageStudents from '@/pages/Admin/manage-students'
 import ManageQueries from '@/pages/Admin/manage-queries'
 import CreateExam from '@/pages/Admin/create-exam'
 import ExamResult from '@/pages/Admin/exam-results'
+import ExamWindow from './pages/Student/all-exams'
+import ExamPage from './pages/Student/exam'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,7 +27,19 @@ const router = createBrowserRouter(
       <Route path='/login' element={<Login />} />
 
       {/* All student protected routes for the exam */}
-      <Route path='/exam-window' element={<ExamLayout />} >
+      <Route path='/exam-window' >
+
+        <Route index element={
+          <ExamLayout>
+            <ExamWindow />
+          </ExamLayout>}
+        />
+
+        <Route path=':examId' element={
+          <ExamLayout >
+            <ExamPage />
+          </ExamLayout>}
+        />
 
       </Route>
 
