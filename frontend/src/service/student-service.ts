@@ -1,5 +1,5 @@
-import { axiosInstance } from "@/utils/axiosInstance";
-import { API_ENDPOINTS } from "@/utils/apiPaths";
+import { axiosInstance } from "@/utils/axios-instance";
+import { API_ENDPOINTS } from "@/utils/api-path";
 
 export const getAllStudents = () => {
     return axiosInstance.get(API_ENDPOINTS.STUDENT.GET_ALL, { withCredentials: true });

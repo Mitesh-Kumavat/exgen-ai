@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { StudentAuthContext } from '@/context/StudentContext';
-import { AdminAuthContext } from '@/context/AdminContext';
+import { StudentAuthContext } from '@/context/student-context';
+import { AdminAuthContext } from '@/context/admin-context';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { extractErrorMessage } from '@/utils/errorHandler';
+import { extractErrorMessage } from '@/utils/error-handler';
 
 function Login() {
     const navigate = useNavigate();

@@ -1,7 +1,7 @@
 import React, { createContext, useState } from 'react';
 import type { AdminAuthState, Admin } from '@/types';
-import { axiosInstance } from '@/utils/axiosInstance';
-import { API_ENDPOINTS } from '@/utils/apiPaths';
+import { axiosInstance } from '@/utils/axios-instance';
+import { API_ENDPOINTS } from '@/utils/api-path';
 
 export const AdminAuthContext = createContext<AdminAuthState>({
     admin: null,

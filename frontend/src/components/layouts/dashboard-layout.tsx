@@ -1,6 +1,6 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from './AppSidebar';
-import ProtectedAdmin from "../protected/ProtectedAdmin";
+import { AppSidebar } from './app-sidebar';
+import ProtectedAdmin from "../protected/protected-admin";
 import { ModeToggle } from "../mode-toggle";
 
 const DashboardLayout = ({ children }: {

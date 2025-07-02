@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { useContext } from 'react';
-import { AdminAuthContext } from '@/context/AdminContext';
+import { AdminAuthContext } from '@/context/admin-context';
 
 const menuItems = [
     {

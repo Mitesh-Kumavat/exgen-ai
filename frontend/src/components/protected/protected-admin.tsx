@@ -1,6 +1,6 @@
-import { AdminAuthContext } from '@/context/AdminContext'
-import { API_ENDPOINTS } from '@/utils/apiPaths'
-import { axiosInstance } from '@/utils/axiosInstance'
+import { AdminAuthContext } from '@/context/admin-context'
+import { API_ENDPOINTS } from '@/utils/api-path'
+import { axiosInstance } from '@/utils/axios-instance'
 import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 

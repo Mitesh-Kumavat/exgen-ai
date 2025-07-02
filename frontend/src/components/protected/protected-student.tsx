@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { axiosInstance } from '@/utils/axiosInstance'
-import { API_ENDPOINTS } from '@/utils/apiPaths'
-import { StudentAuthContext } from '@/context/StudentContext'
+import { axiosInstance } from '@/utils/axios-instance'
+import { API_ENDPOINTS } from '@/utils/api-path'
+import { StudentAuthContext } from '@/context/student-context'
 
 const ProtectedStudent = ({ children }: {
     children: React.ReactNode

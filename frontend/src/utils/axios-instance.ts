@@ -1,6 +1,6 @@
 import axios from "axios";
 import { toast } from 'sonner';
-import { BASE_URL } from "./apiPaths";
+import { BASE_URL } from "./api-path";
 
 export const axiosInstance = axios.create({
     baseURL: BASE_URL,

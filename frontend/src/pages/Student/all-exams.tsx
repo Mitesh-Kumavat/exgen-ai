@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react"
 import { toast } from "sonner"
-import { getAllExamData } from "@/service/examService"
+import { getAllExamData } from "@/service/exam-service"
 import { ExamCard } from "@/components/exam-window/exam-card"
 import { Clock, BookOpen } from "lucide-react"
 import type { ExamData } from "@/types"
-import { extractErrorMessage } from "@/utils/errorHandler"
+import { extractErrorMessage } from "@/utils/error-handler"
 import { Card, CardContent } from "@/components/ui/card"
 
 const ExamWindow = () => {

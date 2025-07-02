@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { ExamInfo } from "@/components/admin-screen/create-exam/exam-info";
 import { QuestionSchemaForm } from "@/components/admin-screen/create-exam/question-schema-form";
 import { ChapterFormList } from "@/components/admin-screen/create-exam/chapter-form";
-import { uploadChapterPDF, createExamDraft } from "@/service/examService";
+import { uploadChapterPDF, createExamDraft } from "@/service/exam-service";
 import type { ChapterForm } from "@/types";
 import type { QuestionSchema } from "@/types";
 import { useNavigate } from "react-router-dom";

@@ -10,8 +10,8 @@ import { Badge } from "@/components/ui/badge"
 import { BookOpen, Send, AlertCircle } from "lucide-react"
 import type { ExamPaper, AnswerData } from "@/types"
 import { saveExamProgress, getExamProgress, clearExamProgress } from "@/utils/exam-storage"
-import { generateExamPaper, submitExam } from "@/service/examService"
-import { extractErrorMessage } from "@/utils/errorHandler"
+import { generateExamPaper, submitExam } from "@/service/exam-service"
+import { extractErrorMessage } from "@/utils/error-handler"
 
 const ExamPage = () => {
     const { examId } = useParams()

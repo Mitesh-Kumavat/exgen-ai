@@ -1,12 +1,12 @@
 "use client"
 
-import { getAllExamData, updateExamStatus } from "@/service/examService"
+import { getAllExamData, updateExamStatus } from "@/service/exam-service"
 import { useEffect, useState } from "react"
 import { ExamCard } from "@/components/admin-screen/manage-exam/exam-card"
 import { SearchAndFilter } from "@/components/admin-screen/manage-exam/search-and-filter"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
-import { extractErrorMessage } from "@/utils/errorHandler"
+import { extractErrorMessage } from "@/utils/error-handler"
 
 export interface ExamData {
     _id: string,

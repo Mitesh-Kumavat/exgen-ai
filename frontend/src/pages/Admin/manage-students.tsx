@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Plus, Users, Key, Mail, Trash2 } from "lucide-react"
 import type { Student } from "@/types"
-import { addStudent, bulkCSVUpload, deleteAllStudents, deleteStudentById, generateRandomPasswords, getAllStudents, mailCredentials } from "@/service/studentService"
-import { extractErrorMessage } from "@/utils/errorHandler"
+import { addStudent, bulkCSVUpload, deleteAllStudents, deleteStudentById, generateRandomPasswords, getAllStudents, mailCredentials } from "@/service/student-service"
+import { extractErrorMessage } from "@/utils/error-handler"
 
 const ManageStudents = () => {
     const [students, setStudents] = useState<Student[]>([])

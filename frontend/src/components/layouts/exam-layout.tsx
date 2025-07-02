@@ -1,4 +1,4 @@
-import ProtectedStudent from '@/components/protected/ProtectedStudent'
+import ProtectedStudent from '@/components/protected/protected-student'
 
 const ExamLayout = ({ children }: {
     children: React.ReactNode

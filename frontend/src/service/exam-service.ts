@@ -1,5 +1,5 @@
-import { axiosInstance } from "@/utils/axiosInstance";
-import { API_ENDPOINTS } from "@/utils/apiPaths";
+import { axiosInstance } from "@/utils/axios-instance";
+import { API_ENDPOINTS } from "@/utils/api-path";
 
 export const uploadChapterPDF = (chapter: string, file: File) => {
     const formData = new FormData();

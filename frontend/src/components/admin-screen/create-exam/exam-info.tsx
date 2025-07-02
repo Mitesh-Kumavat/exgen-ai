@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SEMESTERS, examFormFields } from "@/constants/examConstants";
+import { SEMESTERS, examFormFields } from "@/constants/exam-constants";
 
 export const ExamInfo = ({ formData, handleFormChange }: any) => (
     <div className="space-y-4">
