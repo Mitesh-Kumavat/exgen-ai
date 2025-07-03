@@ -138,3 +138,22 @@ export const mailResultToStudent = asyncHandler(async (req, res) => {
 
     res.status(200).json(new ApiResponse(200, null, 'Results sent to all students successfully'));
 })
+
+export const getResultByAnswerSheetId = asyncHandler(async (req, res) => {
+    const { answerSheetId } = req.params;
+
+    if (!answerSheetId) {
+        return res.status(400).json(new ApiError(400, 'Answer Sheet ID is required'));
+    }
+
+    const result = await ResultModel.findOne({ answerSheet: answerSheetId })
+        .populate('student', 'name email enrollmentNumber')
+        .populate('exam', 'title date totalMarks passingMarks')
+        .select('-__v -scoreBreakdown');
+
+    if (!result) {
+        throw new ApiError(404, 'Result not found for the specified answer sheet');
+    }
+
+    res.status(200).json(new ApiResponse(200, result, 'Result fetched successfully'));
+})

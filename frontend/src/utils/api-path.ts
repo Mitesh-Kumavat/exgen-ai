@@ -48,6 +48,7 @@ export const API_ENDPOINTS = {
         GET_BY_STUDENT_AND_EXAM_ID: (studentId: string, examId: string) => `${BASE_URL}/result/student/${studentId}/exam/${examId}`,
         EXPORT_CSV: (examId: string) => `${BASE_URL}/result/exam/${examId}/csv`,
         MAIL_RESULTS: (examId: string) => `${BASE_URL}/result/${examId}/mail-result`,
+        GET_BY_ANSWER_SHEET_ID: (answerSheetId: string) => `${BASE_URL}/answer-sheet/${answerSheetId}`,
     },
     STATS: {
         BASIC: `${BASE_URL}/stats`,

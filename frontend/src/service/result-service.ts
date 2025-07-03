@@ -43,3 +43,15 @@ export const sendResultsByEmail = async (examId: string) => {
         withCredentials: true
     });
 }
+
+export const getAnswerSheetById = async (answerSheetId: string) => {
+    return axiosInstance.get(API_ENDPOINTS.ANSWER_SHEET.GET_BY_ID(answerSheetId), {
+        withCredentials: true
+    });
+}
+
+export const getResultByAnswerSheetId = async (answerSheetId: string) => {
+    return axiosInstance.get(API_ENDPOINTS.RESULT.GET_BY_ANSWER_SHEET_ID(answerSheetId), {
+        withCredentials: true
+    });
+}

@@ -21,8 +21,7 @@ export const getQueries = asyncHandler(async (req, res) => {
 });
 
 export const raiseQuery = asyncHandler(async (req, res) => {
-    const studentId = req._id;
-    const { examId } = req.body;
+    const { examId, studentId } = req.body;
 
     if (!examId) {
         return res.status(400).json(new ApiError(400, "Exam ID is required"));
