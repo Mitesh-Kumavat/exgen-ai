@@ -3,7 +3,10 @@ import { asyncHandler } from '../utils/asyncHandler.js'
 import { Parser } from 'json2csv';
 import ApiError from '../utils/apiError.js'
 import { ExamModel } from '../models/exam.model.js';
+import { sendEmail } from '../utils/mail.js';
+import { mailResultTemplate } from '../templates/resultMail.js';
 import { ApiResponse } from '../utils/apiResponse.js'
+import { FRONTEND_URL } from '../constants.js';
 
 export const getResults = asyncHandler(async (req, res) => {
     const { examId } = req.params;
@@ -99,4 +102,39 @@ export const getResultByStudentAndExam = asyncHandler(async (req, res) => {
     }
 
     res.status(200).json(new ApiResponse(200, result, 'Result fetched successfully'));
+})
+
+export const mailResultToStudent = asyncHandler(async (req, res) => {
+    const { examId } = req.params;
+
+    if (!examId) {
+        return res.status(400).json(new ApiError(400, 'Exam ID is required'));
+    }
+
+    const results = await ResultModel.find({ exam: examId })
+        .populate('student', 'name email enrollmentNumber password')
+        .populate('exam', 'title date totalMarks passingMarks subject')
+
+    if (!results) {
+        throw new ApiError(404, 'Result not found');
+    }
+
+    for (const result of results) {
+        const html = mailResultTemplate(
+            result.student.name,
+            result.student.enrollmentNumber,
+            result.answerSheet,
+            result.exam._id,
+            result.exam.title,
+            result.exam.totalMarks,
+            result.exam.subject,
+            result.achievedMarks,
+            result.category,
+            result.feedbackSummary,
+            FRONTEND_URL
+        );
+        await sendEmail(result.student.email, `${result.exam.title}-${result.exam.subject} exam's result is out now.`, 'Latest Exam Result', html);
+    }
+
+    res.status(200).json(new ApiResponse(200, null, 'Results sent to all students successfully'));
 })

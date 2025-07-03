@@ -9,6 +9,7 @@ import { uploadChapterPDF, createExamDraft } from "@/service/exam-service";
 import type { ChapterForm } from "@/types";
 import type { QuestionSchema } from "@/types";
 import { useNavigate } from "react-router-dom";
+import { extractErrorMessage } from "@/utils/error-handler";
 
 const initialForm = {
     title: "",
@@ -88,8 +89,9 @@ export default function CreateExam() {
             setQuestionSchema({ mcq: { count: 0, mark: 1 }, subjective: { count: 0, mark: 0, additionalCheckingTip: "" }, code: { count: 0, mark: 0, additionalCheckingTip: "" }, evaluationInstruction: "", difficultyInstruction: "" });
             setChapters([{ chapter: "", marks: 0, file: null }]);
             navigate("/dashboard/manage-exams");
-        } catch {
-            toast.error("Failed to create exam");
+        } catch (error){
+            const err = extractErrorMessage(error, "Failed to create exam");
+            toast.error(err);
         } finally {
             setCreating(false);
         }
