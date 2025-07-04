@@ -178,8 +178,8 @@ export const getAnswerSheetById = asyncHandler(async (req, res) => {
     const { answerSheetId } = req.params;
 
     const answerSheet = await AnswerSheetModel.findById(answerSheetId)
-        .populate('student', 'name email')
-        .populate('exam', 'title date')
+        .populate('student', 'name email enrollmentNumber')
+        .populate('exam', 'title date subject')
         .populate('exam.questionPaperSchema', 'title');
 
     if (!answerSheet) {

@@ -54,7 +54,7 @@ export const convertResultToCSV = asyncHandler(async (req, res) => {
     }
 
     const results = await ResultModel.find({ exam: examId })
-        .populate('student', 'name email enrollmentNumber')
+        .populate('student', 'name email enrollmentNumber branch')
         .select('-__v -scoreBreakdown');
 
     const exam = await ExamModel.findById(examId).select('title totalMarks passingMarks semester')
@@ -63,16 +63,16 @@ export const convertResultToCSV = asyncHandler(async (req, res) => {
         throw new ApiError(404, 'No results found for the specified exam');
     }
 
-    const fields = ['name', 'enrollment', 'total', 'obtained', 'category', 'status']
+    const fields = ['name', 'enrollment', 'branch', 'total', 'obtained', 'category', 'status']
 
     const opts = { fields };
-
 
     const data = results.map(result => ({
         name: result.student.name,
         enrollment: result.student.enrollmentNumber,
+        branch: result.student.branch,
         total: exam.totalMarks,
-        obtainedMarks: result.achievedMarks,
+        obtained: result.achievedMarks,
         category: result.category,
         status: result.achievedMarks >= exam.passingMarks ? 'pass' : 'fail'
     }));
