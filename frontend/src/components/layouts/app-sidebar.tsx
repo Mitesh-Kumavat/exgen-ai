@@ -77,7 +77,12 @@ export function AppSidebar() {
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton
                                         asChild
-                                        isActive={location.pathname === item.url}
+                                        isActive={
+                                            item.url === "/dashboard"
+                                                ? location.pathname === "/dashboard"
+                                                : location.pathname.startsWith(item.url)
+                                        }
+
                                         className="w-full justify-start gap-3 px-3 py-2 rounded-lg transition-all hover:bg-accent hover:text-accent-foreground"
                                     >
                                         <Link to={item.url} className="flex items-center gap-3">

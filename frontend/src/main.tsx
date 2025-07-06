@@ -1,9 +1,8 @@
 import { createRoot } from 'react-dom/client'
 import { ThemeProvider } from "@/components/theme-provider"
 import '@/index.css'
-import App from '@/App.tsx'
 import Login from '@/pages/auth/login'
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider } from 'react-router-dom'
 import { StudentAuthProvider } from '@/context/student-context'
 import { Toaster } from 'sonner'
 import { AdminAuthProvider } from '@/context/admin-context'
@@ -23,8 +22,7 @@ import ExamResultPage from '@/pages/Admin/exam-results'
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path='/' element={<App />}>
-      </Route>
+      <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path='/login' element={<Login />} />
       <Route path='/:examId/result/:answerSheetId' element={<StudentResultPage />} />
 
