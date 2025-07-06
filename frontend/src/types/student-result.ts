@@ -1,41 +1,3 @@
-export interface ExamStats {
-    examName: string
-    semester: number
-    enrolledStudents: number
-    duration: number
-    totalMarks: number
-    passStudents: number
-    failStudents: number
-    averageMarks: string
-    submittedExamPapers: number
-}
-
-export interface Student {
-    _id: string
-    name: string
-    enrollmentNumber: string
-    email: string
-}
-
-export interface ExamInfo {
-    _id: string
-    title: string
-    totalMarks: number
-    passingMarks: number
-}
-
-export interface ExamResult {
-    _id: string
-    student: Student
-    exam: ExamInfo
-    achievedMarks: number
-    answerSheet: string
-    category: string
-    feedbackSummary: string
-    createdAt: string
-    updatedAt: string
-}
-
 export interface MCQAnswer {
     questionId: string
     selectedOption: string
@@ -60,10 +22,17 @@ export interface CodeAnswer {
     _id: string
 }
 
-export interface AnswerSheet {
+export interface StudentAnswerSheet {
     _id: string
-    student: Student
-    exam: ExamInfo
+    student: {
+        _id: string
+        name: string
+        email: string
+    }
+    exam: {
+        _id: string
+        title: string
+    }
     answers: {
         mcq: MCQAnswer[]
         subjective: SubjectiveAnswer[]
@@ -72,6 +41,28 @@ export interface AnswerSheet {
     achievedMarks: number
     isSubmitted: boolean
     submitTime: string
+    createdAt: string
+    updatedAt: string
+}
+
+export interface StudentResult {
+    _id: string
+    student: {
+        _id: string
+        name: string
+        enrollmentNumber: string
+        email: string
+    }
+    exam: {
+        _id: string
+        title: string
+        totalMarks: number
+        passingMarks: number
+    }
+    achievedMarks: number
+    answerSheet: string
+    category: string
+    feedbackSummary: string
     createdAt: string
     updatedAt: string
 }

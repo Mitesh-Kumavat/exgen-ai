@@ -7,3 +7,21 @@ export const raiseQuery = async (queryData: any) => {
         withCredentials: true
     });
 }
+
+export const getAllQueries = async () => {
+    return axiosInstance.get(API_ENDPOINTS.QUERY.GET_ALL, {
+        withCredentials: true
+    });
+}
+
+export const resolveQuerie = async (queryId: string, data: any) => {
+    return axiosInstance.put(API_ENDPOINTS.QUERY.RESOLVE(queryId), data, {
+        withCredentials: true
+    });
+}
+
+export const updateMakrs = async (answerSheetId: string, data: any) => {
+    return axiosInstance.put(API_ENDPOINTS.ANSWER_SHEET.UPDATE_BY_ID(answerSheetId), data, {
+        withCredentials: true
+    });
+}

@@ -26,6 +26,7 @@ export const API_ENDPOINTS = {
         EXAM: {
             START_EXAM: (examId: string) => `${BASE_URL}/exam-paper/${examId}`,
             SUBMIT_EXAM: (examId: string) => `${BASE_URL}/answer-sheet/${examId}`,
+            GET_EXAM_PAPER_BY_STUDENT_AND_EXAM_ID: (examId: string, studentId: string) => `${BASE_URL}/exam-paper/${examId}/${studentId}`,
         },
         QUERY: {
             RAISE: `${BASE_URL}/query`,
@@ -48,7 +49,7 @@ export const API_ENDPOINTS = {
         GET_BY_STUDENT_AND_EXAM_ID: (studentId: string, examId: string) => `${BASE_URL}/result/student/${studentId}/exam/${examId}`,
         EXPORT_CSV: (examId: string) => `${BASE_URL}/result/exam/${examId}/csv`,
         MAIL_RESULTS: (examId: string) => `${BASE_URL}/result/${examId}/mail-result`,
-        GET_BY_ANSWER_SHEET_ID: (answerSheetId: string) => `${BASE_URL}/answer-sheet/${answerSheetId}`,
+        GET_BY_ANSWER_SHEET_ID: (answerSheetId: string) => `${BASE_URL}/result/answer-sheet/${answerSheetId}`,
     },
     STATS: {
         BASIC: `${BASE_URL}/stats`,

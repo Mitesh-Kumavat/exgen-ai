@@ -21,8 +21,7 @@ export const getExamPapers = async (req, res) => {
 }
 
 export const getExamPaperByStudentId = asyncHandler(async (req, res) => {
-    const { examId } = req.params;
-    const { studentId } = req._id;
+    const { examId, studentId } = req.params;
 
     if (!examId || !studentId) {
         throw new ApiError(400, 'Exam ID and Student ID are required');

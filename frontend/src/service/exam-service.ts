@@ -40,3 +40,7 @@ export const generateExamPaper = (examId: string) => {
 export const submitExam = (examId: string, answers: any) => {
     return axiosInstance.post(API_ENDPOINTS.STUDENT.EXAM.SUBMIT_EXAM(examId), { answers }, { withCredentials: true });
 }
+
+export const getExamPaperByStudentAndExamId = (examId: string, sutdentId: string) => {
+    return axiosInstance.get(API_ENDPOINTS.STUDENT.EXAM.GET_EXAM_PAPER_BY_STUDENT_AND_EXAM_ID(examId, sutdentId), { withCredentials: true });
+}

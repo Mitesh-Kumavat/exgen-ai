@@ -1,39 +1,49 @@
-export interface ExamStats {
-    examName: string
-    semester: number
-    enrolledStudents: number
-    duration: number
-    totalMarks: number
-    passStudents: number
-    failStudents: number
-    averageMarks: string
-    submittedExamPapers: number
-}
-
-export interface Student {
+export interface Query {
     _id: string
-    name: string
-    enrollmentNumber: string
-    email: string
-}
-
-export interface ExamInfo {
-    _id: string
-    title: string
-    totalMarks: number
-    passingMarks: number
-}
-
-export interface ExamResult {
-    _id: string
-    student: Student
-    exam: ExamInfo
-    achievedMarks: number
-    answerSheet: string
-    category: string
-    feedbackSummary: string
+    student: {
+        _id: string
+        name: string
+        email: string
+    }
+    exam: {
+        _id: string
+        title: string
+        subject: string
+    }
+    answerSheet: {
+        _id: string
+    }
+    examPaper: string
+    isResolved: boolean
+    remarks: string | null
     createdAt: string
     updatedAt: string
+}
+
+export interface QueryFilters {
+    status: "all" | "pending" | "resolved"
+    sortBy: "oldest" | "newest"
+    searchQuery: string
+}
+
+export interface MCQQuestion {
+    _id: string
+    text: string
+    options: string[]
+    correctOption: string
+    marks: number
+}
+
+export interface SubjectiveQuestion {
+    _id: string
+    text: string
+    marks: number
+}
+
+export interface CodeQuestion {
+    _id: string
+    text: string
+    marks: number
 }
 
 export interface MCQAnswer {
@@ -58,42 +68,6 @@ export interface CodeAnswer {
     marksAwarded: number
     aiFeedback?: string
     _id: string
-}
-
-export interface AnswerSheet {
-    _id: string
-    student: Student
-    exam: ExamInfo
-    answers: {
-        mcq: MCQAnswer[]
-        subjective: SubjectiveAnswer[]
-        code: CodeAnswer[]
-    }
-    achievedMarks: number
-    isSubmitted: boolean
-    submitTime: string
-    createdAt: string
-    updatedAt: string
-}
-
-export interface MCQQuestion {
-    _id: string
-    text: string
-    options: string[]
-    correctOption: string
-    marks: number
-}
-
-export interface SubjectiveQuestion {
-    _id: string
-    text: string
-    marks: number
-}
-
-export interface CodeQuestion {
-    _id: string
-    text: string
-    marks: number
 }
 
 export interface ExamPaper {
@@ -137,4 +111,33 @@ export interface ExamPaper {
     createdAt: string
     updatedAt: string
     submitTime?: string
+}
+
+export interface StudentAnswerSheet {
+    _id: string
+    student: {
+        _id: string
+        name: string
+        email: string
+    }
+    exam: {
+        _id: string
+        title: string
+    }
+    answers: {
+        mcq: MCQAnswer[]
+        subjective: SubjectiveAnswer[]
+        code: CodeAnswer[]
+    }
+    achievedMarks: number
+    isSubmitted: boolean
+    submitTime: string
+    createdAt: string
+    updatedAt: string
+}
+
+export interface MarkUpdate {
+    questionType: string
+    questionId: string
+    newMarks: number
 }

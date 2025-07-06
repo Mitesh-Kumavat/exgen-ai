@@ -10,7 +10,7 @@ import { mailQueryResolveTemplate } from "../templates/queryMail.js";
 export const getQueries = asyncHandler(async (req, res) => {
     const queries = await QueryModel.find()
         .populate("student", "name email")
-        .populate("exam", "title")
+        .populate("exam", "title subject")
         .populate("answerSheet", "score")
 
     if (!queries) {
@@ -34,9 +34,6 @@ export const raiseQuery = asyncHandler(async (req, res) => {
     }
 
     const existingQuery = await QueryModel.findOne({ student: studentId, exam: examId });
-
-    console.log(existingQuery);
-
 
     if (existingQuery) {
         throw new ApiError(400, "You have already raised query for this exam");
