@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import { evaluateMcqAnswers, findCodingQuestions, findSubjectiveQuestions } from "../utils/evaluator.js";
 import { ApiResponse } from '../utils/apiResponse.js';
 import { ResultModel } from '../models/result.model.js';
+import { getCategory } from '../utils/getCategory.js';
 
 export const submitAnswerSheet = asyncHandler(async (req, res) => {
     const submittedAt = new Date();
@@ -21,7 +22,9 @@ export const submitAnswerSheet = asyncHandler(async (req, res) => {
     const examPaper = await ExamPaperModel.findOne({
         exam: examId,
         student: studentId,
-    }).populate('questionPaperSchema', "evaluationInstruction");
+    })
+        .populate('questionPaperSchema', "evaluationInstruction")
+        .populate('exam', 'totalMarks');
 
     if (!examPaper) return res.status(404).json(new ApiResponse(404, null, "Exam paper not found"));
 
@@ -88,11 +91,13 @@ export const submitAnswerSheet = asyncHandler(async (req, res) => {
         { isSubmitted: true, submitTime: submittedAt, answerSheet: answerSheet._id },
     );
 
+    const category = getCategory(totalMarks, examPaper.exam.totalMarks);
+
     const result = await ResultModel.create({
         student: studentId,
         exam: examId,
         achievedMarks: totalMarks,
-        category: data.evaluationResult.other.category,
+        category: category,
         answerSheet: answerSheet._id,
         scoreBreakdown: {
             mcq: mcqTotal,
@@ -162,9 +167,8 @@ export const updateMarks = asyncHandler(async (req, res) => {
         };
 
         const totalMarks = (await ExamModel.findById(result.exam))?.totalMarks;
-        const percentage = (newAchievedMarks / totalMarks) * 100;
 
-        result.category = percentage >= 85 ? 'topper' : percentage >= 50 ? 'average' : 'weak';
+        result.category = getCategory(newAchievedMarks, totalMarks);
         await result.save();
     }
 

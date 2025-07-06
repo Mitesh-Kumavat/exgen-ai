@@ -20,7 +20,7 @@ const Result = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ['weak', 'average', 'topper']
+        enum: ['weak', 'average', 'good', 'excellent'],
     },
     scoreBreakdown: {
         mcq: Number,

@@ -5,6 +5,7 @@ import { sendEmail } from "../utils/mail.js";
 import { StudentModel } from "../models/student.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ExamPaperModel } from "../models/examPaper.model.js";
+import { FRONTEND_URL } from "../constants.js";
 import { mailQueryResolveTemplate } from "../templates/queryMail.js";
 
 export const getQueries = asyncHandler(async (req, res) => {
@@ -103,7 +104,7 @@ export const resolveQuery = asyncHandler(async (req, res) => {
     const student = await StudentModel.findById(query.student);
     const email = student.email;
 
-    sendEmail(email, "Query Status", "Your query has been resolved", mailQueryResolveTemplate(student.name, student.enrollmentNumber, remarks));
+    sendEmail(email, "Query Status", "Your query has been resolved", mailQueryResolveTemplate(student.name, student.enrollmentNumber, remarks, FRONTEND_URL, query.exam._id, query.answerSheet._id));
 
     if (!query) {
         throw new ApiError(404, "Query not found");

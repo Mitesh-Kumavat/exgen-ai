@@ -6,5 +6,5 @@ const router = Router();
 
 router.post('/:examId', verifyStudent, submitAnswerSheet);
 router.put('/:answerSheetId', verifyAdmin, updateMarks)
-router.get('/:answerSheetId', verifyAdmin, getAnswerSheetById)
+router.get('/:answerSheetId', getAnswerSheetById)
 export default router;
