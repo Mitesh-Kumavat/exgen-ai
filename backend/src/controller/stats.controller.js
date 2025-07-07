@@ -6,22 +6,27 @@ import { AnswerSheetModel } from '../models/answerSheet.model.js'
 import { ResultModel } from '../models/result.model.js'
 import { StudentModel } from '../models/student.model.js'
 import { ExamPaperModel } from '../models/examPaper.model.js'
+import { QueryModel } from '../models/query.model.js'
 
 export const getBasicStats = asyncHandler(async (_req, res) => {
-    const examsCount = await ExamModel.find().countDocuments();
+    const totalExams = await ExamModel.find().countDocuments();
     const answerSheetsCount = await AnswerSheetModel.find().countDocuments();
     const studentsCount = await StudentModel.find().countDocuments();
     const activeExamsCount = await ExamModel.find({ status: "active" }).countDocuments();
+    const pendingQueries = await QueryModel.find({ status: "pending" }).countDocuments();
+    const totalQueries = await QueryModel.find().countDocuments();
 
-    if (examsCount === null || answerSheetsCount === null || studentsCount === null) {
+    if (totalExams === null || answerSheetsCount === null || studentsCount === null) {
         throw new ApiError(500, 'Failed to retrieve statistics');
     }
 
     const stats = {
-        examsCount,
+        totalExams,
         answerSheetsCount,
         studentsCount,
-        activeExamsCount
+        activeExamsCount,
+        pendingQueries,
+        totalQueries,
     };
 
     res.status(200).json(new ApiResponse(200, stats, 'Statistics retrieved successfully'));

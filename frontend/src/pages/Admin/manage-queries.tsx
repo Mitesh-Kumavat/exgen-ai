@@ -18,7 +18,7 @@ const ManageQueries = () => {
     const [detailModalOpen, setDetailModalOpen] = useState(false)
     const [filters, setFilters] = useState<QueryFiltersType>({
         status: "all",
-        sortBy: "oldest",
+        sortBy: "newest",
         searchQuery: "",
     })
 
@@ -64,6 +64,7 @@ const ManageQueries = () => {
                 (query) =>
                     query.student.name.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
                     query.student.email.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
+                    query.student.enrollmentNumber.toLowerCase().includes(filters.searchQuery.toLowerCase()) ||
                     query.exam.title.toLowerCase().includes(filters.searchQuery.toLowerCase()),
             )
         }

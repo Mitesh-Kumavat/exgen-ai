@@ -3,6 +3,7 @@ export interface Query {
     student: {
         _id: string
         name: string
+        enrollmentNumber: string
         email: string
     }
     exam: {

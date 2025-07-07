@@ -10,7 +10,7 @@ import { mailQueryResolveTemplate } from "../templates/queryMail.js";
 
 export const getQueries = asyncHandler(async (req, res) => {
     const queries = await QueryModel.find()
-        .populate("student", "name email")
+        .populate("student", "name email enrollmentNumber")
         .populate("exam", "title subject")
         .populate("answerSheet", "score")
 

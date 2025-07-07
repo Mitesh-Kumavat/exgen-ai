@@ -55,3 +55,9 @@ export const getResultByAnswerSheetId = async (answerSheetId: string) => {
         withCredentials: true
     });
 }
+
+export const getDashboardStats = async () => {
+    return axiosInstance.get(API_ENDPOINTS.STATS.BASIC, {
+        withCredentials: true
+    });
+}

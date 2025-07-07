@@ -21,7 +21,7 @@ export const QueryFilters = ({ filters, onFiltersChange }: QueryFiltersProps) =>
             <div className="relative flex-1 max-w-md">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <Input
-                    placeholder="Search by student name, email, or exam..."
+                    placeholder="Search by student name, email, enrollment, or exam..."
                     value={filters.searchQuery}
                     onChange={(e) => handleFilterChange("searchQuery", e.target.value)}
                     className="pl-10"

@@ -15,7 +15,7 @@ export const QueryStatsCards = ({ stats }: QueryStatsCardsProps) => {
     const pendingPercentage = stats.total > 0 ? Math.round((stats.pending / stats.total) * 100) : 0
 
     return (
-        <div className="flex flex-wrap justify-between max-sm:gap-4">
+        <div className="flex flex-wrap justify-between gap-4 lg:gap-0 ">
             <div className="w-full sm:w-[48%] lg:w-[23.5%]">
                 <Card className="border-l-4 border-l-blue-500 border-border h-full">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
