@@ -105,11 +105,14 @@ export const uploadStudentFromCsv = asyncHandler(async (req, res) => {
     }
 
     deleteFile(req.file.path);
-    
+
     try {
         const students = await Student.insertMany(studentsData);
         return res.status(201).json(new ApiResponse(201, students, 'Students uploaded successfully'));
     } catch (error) {
+        if (error.name === 'ValidationError') {
+            return res.status(400).json(new ApiResponse(400, 'Invalid data in CSV file. Please check the format and required fields.', null));
+        }
         if (error.code === 11000) {
             return res.status(400).json(new ApiResponse(400, 'Duplicate enrollment numbers found in the CSV file. Please verify your CSV.', null));
         }
