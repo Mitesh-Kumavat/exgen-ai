@@ -1,13 +1,12 @@
-"use client"
-
 import { useState } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ConfirmationModal } from "./confirmation-modal"
-import { Search, Trash2, Users, Mail, Phone } from "lucide-react"
+import { Search, Trash2, Users, Mail, Phone, ArrowUp, ArrowDown } from "lucide-react"
 import type { Student } from "@/types"
 
 interface StudentsTableProps {
@@ -16,18 +15,50 @@ interface StudentsTableProps {
     onDeleteStudent: (studentId: string) => void
 }
 
+type SortField = "name" | "enrollmentNumber" | "branch"
+type SortOrder = "asc" | "desc"
+
 export const StudentsTable = ({ students, loading, onDeleteStudent }: StudentsTableProps) => {
     const [searchQuery, setSearchQuery] = useState("")
     const [deleteModalOpen, setDeleteModalOpen] = useState(false)
     const [studentToDelete, setStudentToDelete] = useState<Student | null>(null)
+    const [sortField, setSortField] = useState<SortField>("enrollmentNumber")
+    const [sortOrder, setSortOrder] = useState<SortOrder>("asc")
 
-    const filteredStudents = students.filter(
-        (student) =>
-            student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            student.enrollmentNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            student.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            student.branch.toLowerCase().includes(searchQuery.toLowerCase()),
-    )
+    const sortedAndFilteredStudents = students
+        .filter(
+            (student) =>
+                student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                student.enrollmentNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                student.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                student.branch.toLowerCase().includes(searchQuery.toLowerCase()),
+        )
+        .sort((a, b) => {
+            let aValue: string | number
+            let bValue: string | number
+
+            switch (sortField) {
+                case "name":
+                    aValue = a.name.toLowerCase()
+                    bValue = b.name.toLowerCase()
+                    break
+                case "enrollmentNumber":
+                    aValue = a.enrollmentNumber.toLowerCase()
+                    bValue = b.enrollmentNumber.toLowerCase()
+                    break
+                case "branch":
+                    aValue = a.branch.toLowerCase()
+                    bValue = b.branch.toLowerCase()
+                    break
+                default:
+                    aValue = a.enrollmentNumber.toLowerCase()
+                    bValue = b.enrollmentNumber.toLowerCase()
+            }
+
+            if (aValue < bValue) return sortOrder === "asc" ? -1 : 1
+            if (aValue > bValue) return sortOrder === "asc" ? 1 : -1
+            return 0
+        })
 
     const handleDeleteClick = (student: Student) => {
         setStudentToDelete(student)
@@ -67,24 +98,48 @@ export const StudentsTable = ({ students, loading, onDeleteStudent }: StudentsTa
         <>
             <Card>
                 <CardHeader>
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div className="flex flex-col gap-4">
                         <CardTitle className="flex items-center gap-2">
                             <Users className="h-5 w-5" />
-                            Students List ({filteredStudents.length})
+                            Students List ({sortedAndFilteredStudents.length})
                         </CardTitle>
-                        <div className="relative max-w-sm">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                            <Input
-                                placeholder="Search students..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="pl-10"
-                            />
+
+                        <div className="flex flex-col sm:flex-row gap-4 sm:justify-between">
+                            <div className="relative flex-1 max-w-sm">
+                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                                <Input
+                                    placeholder="Search students..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="pl-10"
+                                />
+                            </div>
+
+                            <div className="flex gap-2">
+                                <Select value={sortField} onValueChange={(value) => setSortField(value as SortField)}>
+                                    <SelectTrigger className="w-[180px]">
+                                        <SelectValue placeholder="Sort by" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="enrollmentNumber">Enrollment No.</SelectItem>
+                                        <SelectItem value="name">Name</SelectItem>
+                                        <SelectItem value="branch">Branch</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+                                    className="shrink-0"
+                                >
+                                    {sortOrder === "asc" ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />}
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </CardHeader>
                 <CardContent>
-                    {filteredStudents.length === 0 ? (
+                    {sortedAndFilteredStudents.length === 0 ? (
                         <div className="text-center py-12">
                             <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                             <p className="text-muted-foreground text-lg">
@@ -99,18 +154,25 @@ export const StudentsTable = ({ students, loading, onDeleteStudent }: StudentsTa
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead>Name</TableHead>
-                                        <TableHead>Enrollment No.</TableHead>
-                                        <TableHead>Branch</TableHead>
-                                        <TableHead className="hidden sm:table-cell">Email</TableHead>
+                                        <TableHead>
+                                            Name
+                                        </TableHead>
+                                        <TableHead>
+                                            Enrollment No.
+                                        </TableHead>
+                                        <TableHead>
+                                            Branch
+                                        </TableHead>
+                                        <TableHead className="hidden md:table-cell">
+                                            Email
+                                        </TableHead>
                                         <TableHead className="hidden md:table-cell">Mobile</TableHead>
-                                        <TableHead className="hidden lg:table-cell">Password</TableHead>
-                                        <TableHead className="hidden lg:table-cell">Created At</TableHead>
+                                        <TableHead className="hidden md:table-cell">Password</TableHead>
                                         <TableHead className="text-right">Actions</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {filteredStudents.map((student) => (
+                                    {sortedAndFilteredStudents.map((student) => (
                                         <TableRow key={student._id}>
                                             <TableCell className="font-medium">
                                                 <div className="flex flex-col">
@@ -142,9 +204,6 @@ export const StudentsTable = ({ students, loading, onDeleteStudent }: StudentsTa
                                                 <Badge variant="outline" className="font-mono text-xs">
                                                     {student.password || "N/A"}
                                                 </Badge>
-                                            </TableCell>
-                                            <TableCell className="hidden lg:table-cell text-sm text-muted-foreground">
-                                                {new Date(student.createdAt).toLocaleDateString()}
                                             </TableCell>
                                             <TableCell className="text-right">
                                                 <Button

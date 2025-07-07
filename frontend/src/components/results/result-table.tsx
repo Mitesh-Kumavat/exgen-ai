@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Search, Eye, Users, Mail } from "lucide-react"
+import { Search, Eye, Users, Mail, ArrowUp, ArrowDown } from "lucide-react"
 import type { ExamResult, ExamStats } from "@/types/result"
 
 interface ResultsTableProps {
@@ -14,9 +14,14 @@ interface ResultsTableProps {
     examInfo: ExamStats | null
 }
 
+type SortField = "marks" | "enrollment"
+type SortOrder = "asc" | "desc"
+
 export const ResultsTable = ({ results, onViewAnswerSheet, examInfo }: ResultsTableProps) => {
     const [searchQuery, setSearchQuery] = useState("")
     const [categoryFilter, setCategoryFilter] = useState("all")
+    const [sortField, setSortField] = useState<SortField>("marks")
+    const [sortOrder, setSortOrder] = useState<SortOrder>("desc")
 
     const filteredResults = results.filter((result) => {
         const matchesSearch =
@@ -28,6 +33,30 @@ export const ResultsTable = ({ results, onViewAnswerSheet, examInfo }: ResultsTa
 
         return matchesSearch && matchesCategory
     })
+
+    const sortedResults = [...filteredResults].sort((a, b) => {
+        let comparison = 0
+
+        if (sortField === "marks") {
+            comparison = a.achievedMarks - b.achievedMarks
+        } else if (sortField === "enrollment") {
+            comparison = a.student.enrollmentNumber.localeCompare(b.student.enrollmentNumber)
+        }
+
+        return sortOrder === "asc" ? comparison : -comparison
+    })
+
+    const toggleSortOrder = () => {
+        setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+    }
+
+    const getSortIcon = () => {
+        if (sortOrder === "asc") {
+            return <ArrowUp className="h-4 w-4" />
+        } else {
+            return <ArrowDown className="h-4 w-4" />
+        }
+    }
 
     const getCategoryColor = (category: string) => {
         switch (category.toLowerCase()) {
@@ -67,7 +96,7 @@ export const ResultsTable = ({ results, onViewAnswerSheet, examInfo }: ResultsTa
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                     <CardTitle className="flex items-center gap-2 text-xl">
                         <Users className="h-5 w-5 text-primary" />
-                        Student Results ({filteredResults.length})
+                        Student Results ({sortedResults.length})
                     </CardTitle>
 
                     <div className="flex flex-col sm:flex-row gap-2">
@@ -93,6 +122,22 @@ export const ResultsTable = ({ results, onViewAnswerSheet, examInfo }: ResultsTa
                                 <SelectItem value="weak">Weak</SelectItem>
                             </SelectContent>
                         </Select>
+
+                        <div className="flex gap-2">
+                            <Select value={sortField} onValueChange={(value: SortField) => setSortField(value)}>
+                                <SelectTrigger className="w-full sm:w-32">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="marks">By Marks</SelectItem>
+                                    <SelectItem value="enrollment">By Enrollment</SelectItem>
+                                </SelectContent>
+                            </Select>
+
+                            <Button variant="outline" size="sm" onClick={toggleSortOrder} className="px-3 bg-transparent">
+                                {getSortIcon()}
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </CardHeader>
@@ -103,9 +148,35 @@ export const ResultsTable = ({ results, onViewAnswerSheet, examInfo }: ResultsTa
                         <TableHeader>
                             <TableRow className="bg-muted/30 hover:bg-muted/30">
                                 <TableHead className="font-semibold">Student</TableHead>
-                                <TableHead className="font-semibold">Enrollment</TableHead>
+                                <TableHead className="font-semibold">
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => {
+                                            setSortField("enrollment")
+                                            if (sortField === "enrollment") toggleSortOrder()
+                                        }}
+                                        className="h-auto p-0 font-semibold hover:bg-transparent"
+                                    >
+                                        Enrollment
+                                        {sortField === "enrollment" && <span className="ml-1 text-primary">{getSortIcon()}</span>}
+                                    </Button>
+                                </TableHead>
                                 <TableHead className="hidden md:table-cell font-semibold">Email</TableHead>
-                                <TableHead className="font-semibold">Score</TableHead>
+                                <TableHead className="font-semibold">
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => {
+                                            setSortField("marks")
+                                            if (sortField === "marks") toggleSortOrder()
+                                        }}
+                                        className="h-auto p-0 font-semibold hover:bg-transparent"
+                                    >
+                                        Score
+                                        {sortField === "marks" && <span className="ml-1 text-primary">{getSortIcon()}</span>}
+                                    </Button>
+                                </TableHead>
                                 <TableHead className="font-semibold">Grade</TableHead>
                                 <TableHead className="font-semibold">Status</TableHead>
                                 <TableHead className="font-semibold">Category</TableHead>
@@ -114,7 +185,7 @@ export const ResultsTable = ({ results, onViewAnswerSheet, examInfo }: ResultsTa
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {filteredResults.map((result, _index) => {
+                            {sortedResults.map((result, _index) => {
                                 const percentage = examInfo ? Math.round((result.achievedMarks / examInfo.totalMarks) * 100) : 0
                                 const grade = examInfo
                                     ? getGrade(result.achievedMarks, examInfo.totalMarks)

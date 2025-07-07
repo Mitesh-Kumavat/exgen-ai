@@ -2,6 +2,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from './app-sidebar';
 import ProtectedAdmin from "../protected/protected-admin";
 import { ModeToggle } from "../mode-toggle";
+import { Link } from "react-router-dom";
 
 const DashboardLayout = ({ children }: {
     children: React.ReactNode;
@@ -15,9 +16,9 @@ const DashboardLayout = ({ children }: {
                         <header className="border-b border-border p-4 bg-card">
                             <div className="flex items-center gap-4">
                                 <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
-                                <div className="flex-1">
+                                <Link to='/dashboard' className="flex-1">
                                     <h1 className="text-xl font-semibold text-foreground">Dashboard</h1>
-                                </div>
+                                </Link>
                                 <ModeToggle />
                             </div>
                         </header>
