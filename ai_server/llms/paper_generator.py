@@ -10,7 +10,7 @@ load_dotenv()
 
 llm = ChatGroq(
     model="llama-3.1-8b-instant",
-    temperature=0.3,
+    temperature=0.5,
 )
 
 chain = exam_generator_prompt | llm | parser
@@ -38,6 +38,7 @@ async def generate_exam_paper(req: ExamPaperRequest):
         context = search_similar_chunks(query=topic , k = 9)
         if context:
             chunks += "\n".join([doc.page_content for doc in context]) + "\n"
+    
     generated_exam = chain.invoke({
         "marks": req.marks,
         "duration": req.duration,

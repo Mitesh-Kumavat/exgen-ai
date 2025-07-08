@@ -4,7 +4,7 @@ from langchain_core.prompts import PromptTemplate
 response_schemas = [
     ResponseSchema(
         name="mcq_questions",
-        description="List of multiple choice questions. Each question should have text, options, correctOption, and marks. For Ex-> mcq_questions: {'text': 'Question text', 'options': ['Option A', 'Option B', 'Option C', 'Option D'], 'correctOption': 'A', 'marks': 1}"
+        description="List of multiple choice questions. Each question should have text, options, correctOption, and marks. For Ex-> mcq_questions: {'text': 'Question text', 'options': ['Option A', 'Option B', 'Option C', 'Option D'], 'correctOption': 'A' (NOTE: only give correctOption from this : ['A', 'B', 'C', 'D'], do not make mistake while giving correctOption it should be only from this 4 alphabets and it must be capital), 'marks': 1 (marks according to the mcq_marks given in the prompt)}"
     ),
     ResponseSchema(
         name="subjective_questions",
@@ -39,7 +39,11 @@ Total Marks: {marks} , the final exam paper should sum up to the total marks spe
 Duration: {duration} minutes , make sure to make the exam paper suitable for the given duration.
 Subject: {subject} 
 
-NOTE: The exam paper should be unique and not copy any existing exam papers. It should be based on the provided syllabus and important topics. we are generating different exam papers for the same syllabus, so make sure to generate unique questions and you can add 2 or 3 more unique questions related to the given syllabus's near kind of syllabus.
+IMPORTANT NOTE: The exam paper should be unique and not copy any existing exam papers. It should be based on the provided syllabus and important topics. we are generating different exam papers for the same syllabus, so make sure to generate unique questions and you can add 2 or 3 more unique questions related to the given syllabus's near kind of syllabus, and every questions should be unique not a single question should be repeated, and make sure you generate the questions by combining multiple topics in one question to make questions little tricky.
+---
+Do not use the same questions or options in the MCQs, subjective or coding questions.
+every question should test the student's understanding of the subject and their ability to apply concepts in practical scenarios.
+while generating the exam paper you can add your own twist to make exam little tricky for the questions, but make sure the questions are relevant to the subject and syllabus.
 
 {random_seed} for random seed to ensure uniqueness in question generation.
 
