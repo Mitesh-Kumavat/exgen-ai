@@ -118,7 +118,7 @@ const ManageQueries = () => {
     }
 
     return (
-        <div className="container mx-auto p-4 md:p-6 space-y-6">
+        <div className="container mx-auto p-4 md:p-6 space-y-6  md:pt-0">
             <div className="flex flex-col space-y-4">
                 <div className="flex items-center gap-3">
                     <div className="flex-1">

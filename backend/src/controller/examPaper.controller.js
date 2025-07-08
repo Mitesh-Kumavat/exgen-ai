@@ -51,6 +51,8 @@ export const startExam = asyncHandler(async (req, res) => {
         .populate('questionSchema', 'mcq subjective code evaluationInstruction difficultyInstruction')
         .select('-__v -createdAt -updatedAt -createdBy')
 
+    const durationMinutes = exam?.durationMinutes;
+
     if (!exam) {
         throw new ApiError(404, 'Exam not found');
     }
@@ -75,7 +77,10 @@ export const startExam = asyncHandler(async (req, res) => {
         const sanitizedPaper = {
             _id: existingExamPaper._id,
             student: existingExamPaper.student,
-            exam: existingExamPaper.exam,
+            exam: {
+                "_id": existingExamPaper.exam._id,
+                "durationMinutes": durationMinutes,
+            },
             questions: {
                 mcq: existingExamPaper.questions.mcq.map(({ text, options, marks, _id }) => ({ text, options, marks, _id })),
                 subjective: existingExamPaper.questions.subjective,
@@ -136,7 +141,10 @@ export const startExam = asyncHandler(async (req, res) => {
     const sanitizedExamPaper = {
         _id: examPaper._id,
         student: examPaper.student,
-        exam: examPaper.exam,
+        exam: {
+            "_id": examPaper.exam._id,
+            "durationMinutes": durationMinutes,
+        },
         questions: {
             mcq: examPaper.questions.mcq.map(({ text, options, marks, _id }) => ({ text, options, marks, _id })),
             subjective: examPaper.questions.subjective,
