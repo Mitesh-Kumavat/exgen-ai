@@ -3,14 +3,23 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, Clock, Target, BookOpen, Play } from "lucide-react"
 import type { ExamData } from "@/types"
+import { useNavigate } from "react-router-dom"
 
 interface ExamCardProps {
     exam: ExamData
 }
 
 export const ExamCard = ({ exam }: ExamCardProps) => {
+    const navigate = useNavigate();
+
     const handleStartExam = () => {
-        window.location.href = `/exam-window/${exam._id}`
+        const elem = document.documentElement;
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen().catch(err => console.error("Error entering fullscreen:", err));
+        } else if ((elem as any).webkitRequestFullscreen) {
+            (elem as any).webkitRequestFullscreen();
+        }
+        navigate(`/exam-window/${exam._id}`, { replace: true })
     }
 
     return (

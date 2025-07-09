@@ -12,6 +12,7 @@ import type { ExamPaper, AnswerData } from "@/types"
 import { saveExamProgress, getExamProgress, clearExamProgress } from "@/utils/exam-storage"
 import { generateExamPaper, submitExam } from "@/service/exam-service"
 import { extractErrorMessage } from "@/utils/error-handler"
+import { useSecureExamEnvironment } from "@/hooks/use-secure-enviornment"
 
 const ExamPage = () => {
     const { examId } = useParams()
@@ -25,7 +26,6 @@ const ExamPage = () => {
     const [submitModalOpen, setSubmitModalOpen] = useState(false)
     const [submitting, setSubmitting] = useState(false)
     const [timeUp, setTimeUp] = useState(false)
-
 
     useEffect(() => {
         if (!examId) return
@@ -146,6 +146,8 @@ const ExamPage = () => {
             handleSubmitExam()
         }, 2000)
     }, [])
+
+    useSecureExamEnvironment();
 
     if (loading) {
         return (
