@@ -3,6 +3,7 @@ from langchain_groq import ChatGroq
 from prompts.exam_generator import exam_generator_prompt
 from schemas.exam_request_schema import ExamPaperRequest
 from utils.pdf_vectorizer import search_similar_chunks
+from utils.exam_validator import validate_exam_structure
 from prompts.exam_generator import parser
 import random
 
@@ -54,5 +55,7 @@ async def generate_exam_paper(req: ExamPaperRequest):
         "ch_wise_marks": ch_wise_marks,
         "random_seed": random.randint(0, 10000)  
     })
+    
+    validate_exam_structure(generated_exam, req)
     
     return generated_exam
