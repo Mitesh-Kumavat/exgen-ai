@@ -18,6 +18,7 @@ const ExamPage = () => {
     const { examId } = useParams()
     const [examPaper, setExamPaper] = useState<ExamPaper | null>(null)
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
     const [answers, setAnswers] = useState<AnswerData>({
         mcq_questions: [],
         subjective_questions: [],
@@ -46,11 +47,13 @@ const ExamPage = () => {
                 } else {
                     const err = response.data.message || "Failed to load exam paper"
                     console.error("Error:", err)
+                    setError(err)
                     toast.error(err)
                 }
             } catch (error) {
                 const err = extractErrorMessage(error, "Failed to load exam paper")
                 toast.error(`${err}`)
+                setError(err)
             } finally {
                 setLoading(false)
             }
@@ -167,7 +170,7 @@ const ExamPage = () => {
                     <CardContent className="text-center py-12">
                         <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
                         <h3 className="text-lg font-semibold mb-2">Exam Not Found</h3>
-                        <p className="text-muted-foreground">The requested exam could not be loaded.</p>
+                        <p className="text-muted-foreground">{error}</p>
                     </CardContent>
                 </Card>
             </div>

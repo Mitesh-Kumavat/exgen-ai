@@ -1,4 +1,6 @@
 import { StudentModel as Student } from '../models/student.model.js';
+import { ResultModel } from '../models/result.model.js';
+import { ExamPaperModel } from '../models/examPaper.model.js';
 import { asyncHandler } from '../utils/asyncHandler.js'
 import { ApiResponse } from '../utils/apiResponse.js';
 
@@ -100,4 +102,29 @@ export const getProfileInfo = asyncHandler(async (req, res) => {
     }
 
     return res.status(200).json(new ApiResponse(200, student, 'Profile information retrieved successfully'));
+});
+
+export const getStudentInfo = asyncHandler(async (req, res) => {
+    const studentId = req.params.studentId;
+
+    if (!studentId) {
+        return res.status(400).json(new ApiResponse(400, 'Student ID is required', null));
+    }
+
+    const student = await Student.findById(studentId).select('-password -__v');
+
+    if (!student) {
+        return res.status(404).json(new ApiResponse(404, 'Student not found', null));
+    }
+
+    const results = await ResultModel.find({ student: student._id }).select('-__v');
+    const examPapers = await ExamPaperModel.find({ student: student._id }).select('-__v');
+
+    const data = {
+        student,
+        results,
+        examPapers
+    };
+
+    return res.status(200).json(new ApiResponse(200, data, 'Student information retrieved successfully'));
 });
