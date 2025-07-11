@@ -3,12 +3,15 @@ import { useNavigate } from 'react-router-dom'
 import { axiosInstance } from '@/utils/axios-instance'
 import { API_ENDPOINTS } from '@/utils/api-path'
 import { StudentAuthContext } from '@/context/student-context'
+import { useTheme } from '../theme-provider'
 
 const ProtectedStudent = ({ children }: {
     children: React.ReactNode
 }) => {
     const navigate = useNavigate();
     const { logout, setStudent } = useContext(StudentAuthContext);
+    const { setTheme } = useTheme();
+    setTheme('light');
 
     useEffect(() => {
         const verifyStudent = async () => {
