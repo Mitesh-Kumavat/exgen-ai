@@ -13,7 +13,7 @@ export const getBasicStats = asyncHandler(async (_req, res) => {
     const answerSheetsCount = await AnswerSheetModel.find().countDocuments();
     const studentsCount = await StudentModel.find().countDocuments();
     const activeExamsCount = await ExamModel.find({ status: "active" }).countDocuments();
-    const pendingQueries = await QueryModel.find({ status: "pending" }).countDocuments();
+    const pendingQueries = await QueryModel.find({ isResolved: false }).countDocuments();
     const totalQueries = await QueryModel.find().countDocuments();
 
     if (totalExams === null || answerSheetsCount === null || studentsCount === null) {
