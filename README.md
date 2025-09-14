@@ -1,5 +1,7 @@
 # 🧠 ExGen AI – AI-Powered Digital Exam System
 
+ 
+
 [![Watch Demo](https://img.shields.io/badge/Demo-YouTube-red)](https://youtu.be/OjIBbQ64HsM)
 
 ExGen AI is a smart, secure, and scalable digital exam platform that dynamically generates and evaluates student-specific question papers using AI. Designed to mimic real-world exam systems, it supports subjective, objective, and coding questions with detailed automated feedback.
@@ -64,3 +66,6 @@ ExGen AI is a smart, secure, and scalable digital exam platform that dynamically
 
 📺 **Watch full demo video:**  
 [👉 https://youtu.be/OjIBbQ64HsM](https://youtu.be/OjIBbQ64HsM)
+
+> © 2025 Mitesh — Original Author  
+> This project is proprietary. Unauthorized copying, modification, or redistribution of any part of this code or documentation is strictly prohibited. 
