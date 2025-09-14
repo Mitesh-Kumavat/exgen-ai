@@ -7,7 +7,7 @@ import { SubmitModal } from "@/components/exam-window/submit-modal"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { BookOpen, Send, AlertCircle } from "lucide-react"
+import { BookOpen, Send } from "lucide-react"
 import type { ExamPaper, AnswerData } from "@/types"
 import { saveExamProgress, getExamProgress, clearExamProgress } from "@/utils/exam-storage"
 import { generateExamPaper, submitExam } from "@/service/exam-service"
@@ -167,10 +167,10 @@ const ExamPage = () => {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
                 <Card className="max-w-md">
-                    <CardContent className="text-center py-12">
-                        <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
+                    <CardContent className="text-center py-6 px-24">
                         <h3 className="text-lg font-semibold mb-2">Exam Not Found</h3>
                         <p className="text-muted-foreground">{error}</p>
+                        <p className="text-muted-foreground">Please try again!</p>
                     </CardContent>
                 </Card>
             </div>

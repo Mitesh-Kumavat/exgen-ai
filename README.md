@@ -63,4 +63,4 @@ ExGen AI is a smart, secure, and scalable digital exam platform that dynamically
 ## 📹 Demo
 
 📺 **Watch full demo video:**  
-[👉 https://youtu.be/pbMZpHG7u34?si=yogOcMbcQANcsHJA](https://youtu.be/OjIBbQ64HsM)
+[👉 https://youtu.be/OjIBbQ64HsM](https://youtu.be/OjIBbQ64HsM)
